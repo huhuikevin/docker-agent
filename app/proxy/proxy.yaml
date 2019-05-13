@@ -1,6 +1,6 @@
 port: 8000
 logs:
-  path: /data/server/agent
+  path: /data/server/proxy
 redis:
   server: localhost:6379
   password: ""
