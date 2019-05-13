@@ -2,12 +2,12 @@
 
 #放到云主机的clould-init 脚本中运行
 
-#script=/data/server/appAgent/start.sh
-#config=/data/server/appAgent/config.yaml
-#systempath=/lib/systemd/system
-config=config111.yaml
-script=start.sh
-systempath=./
+script=/data/server/appAgent/start.sh
+#script=start.sh
+config=/data/server/appAgent/config.yaml
+#config=config111.yaml
+systempath=/lib/systemd/system
+#systempath=./
 service=agent.service
 servicefile=$systempath/$service
 networkdev=eth0
@@ -99,17 +99,17 @@ create_script()
 	chmod a+x $script
 }
 
-#apt-get update
-#apt-get install docker.io
+apt-get update
+apt-get install docker.io
 
 create_config
 create_script
 create_service
 
-#systemctl daemon-reload
+systemctl daemon-reload
 
-#systemctl enable $service
+systemctl enable $service
 
-#systemctl start $service
+systemctl start $service
 
 

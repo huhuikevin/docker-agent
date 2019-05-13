@@ -3,11 +3,33 @@
 #放到云主机的clould-init 脚本中运行
 
 script=/data/server/appProxy/start.sh
+config=/data/server/appProxy/config.yaml
+systempath=/lib/systemd/system
+#config=config111.yaml
 #script=start.sh
 #systempath=./
-systempath=/lib/systemd/system
-service=appProxy.service
+service=proxy.service
 servicefile=$systempath/$service
+port=8001
+proxyserver="http://192.168.10.114:8000"
+registry="registry-vpc.cn-hongkong.aliyuncs.com"
+username="kevin@1734249857609980"
+password="Reg&0928"
+image="$registry/lovanow_beta/appproxy:v1"
+
+create_config()
+{
+	echo "port: $port" > $config
+	echo "redis:" >> $config
+	echo "  server: localhost:6379" >> $config
+	echo "  redisDB: 1" >> $config
+	echo "checkagent:" >> $config
+	echo "  interval: 10" >> $config
+	echo "logs:" >> $config
+	echo "  path: /data/server/proxy" >> $config
+}
+
+
 create_service()
 {
 	
@@ -31,16 +53,14 @@ create_service()
 
 create_script()
 {
-	mkdir -p /data/server/appProxy
+	mkdir -p /data/server/appAgent
 	echo "#!/bin/sh" > $script
 
 	echo "mode=\$1" >> $script
 
 	echo "registry=registry-vpc.cn-hongkong.aliyuncs.com" >> $script
-	echo "image=\$registry/lovanow_beta/appproxy:v1" >> $script
-
-
-	echo "docker_name=appproxy" >> $script
+	echo "image=$image" >> $script
+	echo "docker_name=appagent" >> $script
 
 	echo "kill_docker()" >> $script
 	echo "{" >> $script
@@ -57,9 +77,9 @@ create_script()
 
 	echo "start_docker()" >> $script
 	echo "{" >> $script
-    echo "	docker login -u \"kevin@1734249857609980\" -p \"Reg&0928\" \$registry" >> $script
+    echo "	docker login -u \"$username\" -p \"$password\" $registry" >> $script
     echo "  docker pull \$image" >> $script
-    echo "	docker run -d --rm --name \$docker_name --net=bridge  --env APP_PORT=8000 -p 7000:8000 \$image" >> $script
+    echo "	docker run -d --rm --name \$docker_name --net=bridge -p $port:8000 \$image" >> $script
 	echo "}" >> $script
 
 	echo "kill_docker" >> $script
@@ -73,6 +93,7 @@ create_script()
 apt-get update
 apt-get install docker.io
 
+create_config
 create_script
 create_service
 
