@@ -22,8 +22,8 @@ type logcfg struct {
 }
 
 type checkagent struct {
-	Interval   int `json:"interval,omitempty" yaml:"interval,omitempty"`
-	Thrldcount int `json:"thrldcount,omitempty" yaml:"thrldcount,omitempty"`
+	Interval int `json:"interval,omitempty" yaml:"interval,omitempty"`
+	//Thrldcount int `json:"thrldcount,omitempty" yaml:"thrldcount,omitempty"`
 }
 type proxyConfig struct {
 	Redis      redis      `json:"redis,omitempty" yaml:"redis,omitempty"`
