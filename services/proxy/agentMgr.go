@@ -5,10 +5,10 @@ import (
 	"sync"
 	"time"
 
+	"github.com/huhuikevin/docker-agent/common"
+	"github.com/huhuikevin/docker-agent/logger"
+	"github.com/huhuikevin/docker-agent/uitls"
 	uuid "github.com/satori/go.uuid"
-	"jwaoo.com/common"
-	"jwaoo.com/logger"
-	"jwaoo.com/uitls"
 )
 
 //Agent agent的配置

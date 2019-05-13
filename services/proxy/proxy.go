@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"jwaoo.com/common"
-	"jwaoo.com/logger"
-	log "jwaoo.com/logger"
+	"github.com/huhuikevin/docker-agent/common"
+	"github.com/huhuikevin/docker-agent/logger"
+	log "github.com/huhuikevin/docker-agent/logger"
 )
 
 type serverParams common.ServerParams

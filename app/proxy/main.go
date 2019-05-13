@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 
-	"jwaoo.com/services/proxy"
+	"github.com/huhuikevin/docker-agent/services/proxy"
 )
 
 func main() {

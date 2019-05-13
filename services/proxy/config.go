@@ -1,7 +1,7 @@
 package proxy
 
 import (
-	"jwaoo.com/uitls"
+	"github.com/huhuikevin/docker-agent/uitls"
 )
 
 // port: 8000

@@ -1,7 +1,7 @@
 package agent
 
 import (
-	"jwaoo.com/uitls"
+	"github.com/huhuikevin/docker-agent/uitls"
 )
 
 // proxy:

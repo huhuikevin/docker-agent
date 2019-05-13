@@ -9,10 +9,10 @@ import (
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ecr"
-	log "jwaoo.com/logger"
+	log "github.com/huhuikevin/docker-agent/logger"
 )
 
-var authCache string = ""
+var authCache = ""
 var expiresAt time.Time
 
 func tokenValide() bool {
@@ -27,6 +27,7 @@ func tokenValide() bool {
 	return false
 }
 
+//GetECRToken get aws ecr token
 func GetECRToken(regin string) string {
 	if tokenValide() {
 		return authCache

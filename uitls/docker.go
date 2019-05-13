@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	client "jwaoo.com/dockerclient"
-	log "jwaoo.com/logger"
+	client "github.com/huhuikevin/docker-agent/dockerclient"
+	log "github.com/huhuikevin/docker-agent/logger"
 )
 
 var stopTimeout uint = 10 //10s

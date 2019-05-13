@@ -10,9 +10,9 @@ import (
 
 	"github.com/goinggo/mapstructure"
 
-	"jwaoo.com/common"
+	"github.com/huhuikevin/docker-agent/common"
 
-	"jwaoo.com/clients"
+	"github.com/huhuikevin/docker-agent/clients"
 )
 
 func main() {

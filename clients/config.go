@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"strings"
 
-	"jwaoo.com/logger"
+	"github.com/huhuikevin/docker-agent/logger"
 
-	"jwaoo.com/uitls"
+	"github.com/huhuikevin/docker-agent/uitls"
 )
 
 //HealthCheck define the service's healcheck

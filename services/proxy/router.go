@@ -6,8 +6,8 @@ import (
 
 	"encoding/json"
 
-	"jwaoo.com/logger"
-	rclient "jwaoo.com/redis"
+	"github.com/huhuikevin/docker-agent/logger"
+	rclient "github.com/huhuikevin/docker-agent/redis"
 )
 
 //HostAddr ip:port or ip

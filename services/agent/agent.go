@@ -176,15 +176,16 @@ func runRegisterRoutine(quit <-chan int) {
 func ip() string {
 	ip := os.Getenv("HOST_IP")
 	if ip == "" {
-		host = uitls.GetLocalIPByAccessHTTPServer(agentConfigration.Proxy.Server)
+		ip = uitls.GetLocalIPByAccessHTTPServer(agentConfigration.Proxy.Server)
 	}
 	port := agentConfigration.Port
 	ports := os.Getenv("APP_PORT")
 	if ports != "" {
-		port, err := strconv.Atoi(ports)
+		_port, err := strconv.Atoi(ports)
 		if err != nil {
 			return ""
 		}
+		port = int16(_port)
 	}
 
 	return fmt.Sprintf("%s:%d", ip, port)

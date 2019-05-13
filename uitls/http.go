@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"jwaoo.com/logger"
+	"github.com/huhuikevin/docker-agent/logger"
 )
 
 //ResultData generic result data

@@ -1,7 +1,7 @@
 package common
 
 import (
-	client "jwaoo.com/dockerclient"
+	client "github.com/huhuikevin/docker-agent/dockerclient"
 )
 
 //Credential credential of the agent

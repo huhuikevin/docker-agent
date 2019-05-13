@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 
-	"jwaoo.com/services/agent"
+	"github.com/huhuikevin/docker-agent/services/agent"
 )
 
 func main() {

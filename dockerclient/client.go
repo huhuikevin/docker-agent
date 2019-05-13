@@ -6,20 +6,24 @@ import (
 	"strings"
 
 	docker "github.com/fsouza/go-dockerclient"
-	log "jwaoo.com/logger"
+	log "github.com/huhuikevin/docker-agent/logger"
 	//"golang.org/x/net/context"
 )
 
+//Client docker client wrapper
 type Client struct {
 	// client used to send and receive http requests.
 	client *docker.Client
 }
+
+//ULimit linux system limite
 type ULimit struct {
 	Name string `json:"name,omitempty" yaml:"name,omitempty" toml:"name,omitempty"`
 	Soft int64  `json:"softLimit,omitempty" yaml:"softLimit,omitempty" toml:"softLimit,omitempty"`
 	Hard int64  `json:"hardLimit,omitempty" yaml:"hardLimit,omitempty" toml:"hardLimit,omitempty"`
 }
 
+//ContainerConfig docker start config
 type ContainerConfig struct {
 	Env         []string          `json:"Env,omitempty" yaml:"Env,omitempty" toml:"Env,omitempty"`
 	Volume      []string          `json:"Volume,omitempty" yaml:"Volume,omitempty" toml:"Volume,omitempty"`
@@ -33,6 +37,7 @@ type ContainerConfig struct {
 	ExtraHosts  []string          `json:"ExtraHosts,omitempty" yaml:"ExtraHosts,omitempty" toml:"ExtraHosts,omitempty"`
 }
 
+//GetClient get an new client
 func GetClient() (*Client, error) {
 	cli, err := docker.NewClientFromEnv()
 	if err != nil {
@@ -44,7 +49,7 @@ func GetClient() (*Client, error) {
 	return client, nil
 }
 
-//001082450179.dkr.ecr.us-west-1.amazonaws.com/zookeeper:v1
+//PullImage pull docker image from register
 func (cli *Client) PullImage(imageName string) error {
 	if strings.Contains(imageName, "amazonaws") {
 		part := strings.Split(imageName, ".")
@@ -55,11 +60,11 @@ func (cli *Client) PullImage(imageName string) error {
 		token := GetECRToken(regin)
 		tokenPart := strings.Split(token, ":")
 		return cli.PullImageWithAuth(imageName, tokenPart[0], tokenPart[1])
-	} else {
-		return cli.PullImageWithOutAuth(imageName)
 	}
+	return cli.PullImageWithOutAuth(imageName)
 }
 
+//PullImageWithOutAuth with no username&password
 func (cli *Client) PullImageWithOutAuth(imageName string) error {
 	var buf bytes.Buffer
 	nameParts := strings.Split(imageName, ":")
@@ -80,6 +85,7 @@ func (cli *Client) PullImageWithOutAuth(imageName string) error {
 	return nil
 }
 
+//PullImageWithAuth with pass&name
 func (cli *Client) PullImageWithAuth(imageName string, user string, pwd string) error {
 	var buf bytes.Buffer
 	nameParts := strings.Split(imageName, ":")
@@ -105,6 +111,7 @@ func (cli *Client) PullImageWithAuth(imageName string, user string, pwd string) 
 	return nil
 }
 
+//StartDocker start the docker
 func (cli *Client) StartDocker(imageName string, config *ContainerConfig, containerName string) (string, error) {
 	//ctx := context.Background()
 	// err := cli.PullImage(imageName)
@@ -134,7 +141,7 @@ func (cli *Client) StartDocker(imageName string, config *ContainerConfig, contai
 	//log.Println(hostbind)
 
 	dockerExposedPorts := make(map[docker.Port]struct{})
-	for portKey, _ := range config.Port {
+	for portKey := range config.Port {
 		dockerPort := docker.Port(portKey + "/" + "tcp")
 		dockerExposedPorts[dockerPort] = struct{}{}
 	}
@@ -179,10 +186,12 @@ func (cli *Client) StartDocker(imageName string, config *ContainerConfig, contai
 	return container.ID, nil
 }
 
+//StopContainer stop docker container
 func (cli *Client) StopContainer(id string, timeout uint) error {
 	return cli.client.StopContainer(id, timeout)
 }
 
+//FindContainerByName get container by it's name
 func (cli *Client) FindContainerByName(name string) ([]docker.APIContainers, error) {
 	//ctx := context.Background()
 
@@ -201,6 +210,7 @@ func (cli *Client) FindContainerByName(name string) ([]docker.APIContainers, err
 	return contains, err
 }
 
+//FindContainerInfoByName wrapper for FindContainerByName
 func (cli *Client) FindContainerInfoByName(name string) map[string]string {
 	info := make(map[string]string)
 	contains, err := cli.FindContainerByName(name)
@@ -219,6 +229,7 @@ func (cli *Client) FindContainerInfoByName(name string) map[string]string {
 	return info
 }
 
+//FindContainerByShortID get container by it's short id
 func (cli *Client) FindContainerByShortID(id string) ([]docker.APIContainers, error) {
 	//ctx := context.Background()
 
@@ -237,6 +248,7 @@ func (cli *Client) FindContainerByShortID(id string) ([]docker.APIContainers, er
 	return contains, err
 }
 
+//ContainerIsRuning return true if contianer is running
 func (cli *Client) ContainerIsRuning(name string) (string, error) {
 	contains, err := cli.FindContainerByName(name)
 	if err != nil {
@@ -252,8 +264,9 @@ func (cli *Client) ContainerIsRuning(name string) (string, error) {
 	return "", nil
 }
 
-func (cli *Client) ContainerIsRuningByShortId(shortId string) (string, error) {
-	contains, err := cli.FindContainerByShortID(shortId)
+//ContainerIsRuningByShortID short id
+func (cli *Client) ContainerIsRuningByShortID(shortID string) (string, error) {
+	contains, err := cli.FindContainerByShortID(shortID)
 	if err != nil {
 		log.Println(err)
 		return "", err
