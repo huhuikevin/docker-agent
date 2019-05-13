@@ -5,14 +5,15 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"jwaoo.com/common"
-	"jwaoo.com/logger"
-	"jwaoo.com/uitls"
+	"github.com/huhuikevin/docker-agent/common"
+	"github.com/huhuikevin/docker-agent/logger"
+	"github.com/huhuikevin/docker-agent/uitls"
 )
 
 type serverParams common.ServerParams
@@ -172,17 +173,31 @@ func runRegisterRoutine(quit <-chan int) {
 	wg.Wait()
 }
 
+func ip() string {
+	ip := os.Getenv("HOST_IP")
+	if ip == "" {
+		host = uitls.GetLocalIPByAccessHTTPServer(agentConfigration.Proxy.Server)
+	}
+	port := agentConfigration.Port
+	ports := os.Getenv("APP_PORT")
+	if ports != "" {
+		port, err := strconv.Atoi(ports)
+		if err != nil {
+			return ""
+		}
+	}
+
+	return fmt.Sprintf("%s:%d", ip, port)
+}
+
 func myIPPORT() (string, error) {
 	host := myIP
 	if host == "" {
-		host = uitls.GetLocalIPByAccessHTTPServer(agentConfigration.Proxy.Server)
+		host = ip()
 		myIP = host
 	}
 	if host == "" {
 		return "", errors.New("get local ip error")
-	}
-	if agentConfigration.Port != 0 {
-		host = fmt.Sprintf("%s:%d", host, agentConfigration.Port)
 	}
 	return host, nil
 }
