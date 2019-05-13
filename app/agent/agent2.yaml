@@ -1,0 +1,15 @@
+port: 1213
+proxy:
+  server: http://192.168.10.114:8000
+  register: /api/v1/register
+  keepalive: /api/v1/keepalive
+  services: [oauth,common-msg,common-file]
+  beatheart: 2
+logs:
+  path: /data/server/agent
+docker:
+  cloud: ali
+  regin: hongkong
+  reposity: registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta
+  username: 'kevin@1734249857609980'
+  password: 'Reg&0928'

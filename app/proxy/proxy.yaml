@@ -1,0 +1,10 @@
+port: 8000
+logs:
+  path: /data/server/agent
+redis:
+  server: localhost:6379
+  password: ""
+  redisDB: 1
+checkagent:
+  interval: 10
+  thrldcount: 10

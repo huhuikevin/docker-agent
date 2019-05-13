@@ -1,0 +1,42 @@
+repository: registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta
+docker_agent: http://47.75.72.87:7000
+compose_server: fdfs
+services:
+  fdfs_tracker:
+    image: fastdfs:v2
+    container: fdfs-tracker
+    hosts:
+      - 172.16.0.200
+      - 172.16.0.201
+      - 172.16.0.202
+    network: host
+    volumes:
+      - '/data/server/fastdfs:/data'
+    command: '/start.sh tracker'
+    ulimits:
+      - 
+        name: nofile
+        softLimit: 5000
+        hardLimit: 6000
+  fdfs_storage:
+    image: fastdfs:v2
+    container: fdfs-storage
+    hosts:
+      - 172.16.0.200
+      - 172.16.0.201
+      - 172.16.0.202
+    network: host
+    volumes:
+      - '/data/server/fastdfs:/data'
+    command: '/start.sh storage'
+    environment:
+      - 'TRACKER_SERVER=172.16.0.202:22122,172.16.0.201:22122,172.16.0.200:22122'
+      - 'GROUP_NAME=group1'
+      - 'BIND_ADDR=$HOST_IP'
+      - 'WEB_PORT=8000'
+    ulimits:
+      - 
+        name: nofile
+        softLimit: 5000
+        hardLimit: 6000
+

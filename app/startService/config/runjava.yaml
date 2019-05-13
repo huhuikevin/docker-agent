@@ -1,0 +1,215 @@
+repository: registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta
+docker_agent: http://192.168.10.114:8000
+services:
+  oauth:
+    image: oauth
+    ports:
+      - 8080:8080
+    dubbo_ports:
+      - 20887:20880
+    network: bridge
+    volumes:
+      - /data/server/logs:/data/logs
+    checkHealth:
+      path: /oauth/health
+      code: 200
+      timeout: 60
+    ulimits:
+      - 
+        name: nofile
+        soft: 10000
+        hard: 12000
+    java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook
+  community:
+    image: community
+    ports:
+      - 8080:8081
+    dubbo_ports:
+      - 20867:20881
+    network: bridge
+    volumes:
+      - /data/server/logs:/data/logs
+    checkHealth:
+      path: /community/health
+      code: 200
+      timeout: 60
+    ulimits:
+      - 
+        name: nofile
+        soft: 10000
+        hard: 12000
+    java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook
+  order:
+    image: order
+    ports:
+      - 8080:8082
+    dubbo_ports:
+      - 20891:20883
+    network: bridge
+    volumes:
+      - /data/server/logs:/data/logs
+    checkHealth:
+      path: /order/health
+      code: 200
+      timeout: 60
+    ulimits:
+      - 
+        name: nofile
+        soft: 10000
+        hard: 12000
+    java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook
+  payment:
+    image: payment
+    ports:
+      - 8080:8083
+    dubbo_ports:
+      - 20890:20882
+    network: bridge
+    volumes:
+      - /data/server/logs:/data/logs
+    checkHealth:
+      path: /payment/health
+      code: 200
+      timeout: 60
+    ulimits:
+      - 
+        name: nofile
+        soft: 10000
+        hard: 12000
+    java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook
+  srv-route:
+    image: srv-route
+    ports:
+      - 8080:8084
+    network: bridge
+    volumes:
+      - /data/server/logs:/data/logs
+    checkHealth:
+      path: /srv/health
+      code: 200
+      timeout: 60
+    ulimits:
+      - 
+        name: nofile
+        soft: 10000
+        hard: 12000
+    java_opts: JAVA_OPTS=-Xms512m -Xmx512m
+  logs-downtank:
+    image: logs-downtank
+    ports:
+      - 8080:8085
+    network: bridge
+    volumes:
+      - /data/server/logs:/data/logs
+    checkHealth:
+      path: /logs-downtank/health
+      code: 200
+      timeout: 60
+    ulimits:
+      - 
+        name: nofile
+        soft: 10000
+        hard: 12000
+    java_opts: JAVA_OPTS=-Xms512m
+  common-files:
+    image: common-files
+    ports:
+      - 8080:8086
+    network: bridge
+    volumes:
+      - /data/server/logs:/data/logs
+    checkHealth:
+      path: /common/health
+      code: 200
+      timeout: 60
+    ulimits:
+      - 
+        name: nofile
+        soft: 10000
+        hard: 12000
+    java_opts: JAVA_OPTS=-Xms512m -Xmx512m
+  console:
+    image: console
+    ports:
+      - 8080:8088
+    network: bridge
+    volumes:
+      - /data/server/logs:/data/logs
+    checkHealth:
+      path: /console/health
+      code: 200
+      timeout: 60
+    ulimits:
+      - 
+        name: nofile
+        soft: 10000
+        hard: 12000
+    java_opts: JAVA_OPTS=-Xms512m -Xmx512m
+  activity:
+    image: activity
+    ports:
+      - 8080:8089
+    network: bridge
+    volumes:
+      - /data/server/logs:/data/logs
+    checkHealth:
+      path: /activity/health
+      code: 200
+      timeout: 60
+    ulimits:
+      - 
+        name: nofile
+        soft: 10000
+        hard: 12000
+    java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook=true
+  agent:
+    image: agent
+    ports:
+      - 8080:8090
+    network: bridge
+    volumes:
+      - /data/server/logs:/data/logs
+    checkHealth:
+      path: /agent/health
+      code: 200
+      timeout: 60
+    ulimits:
+      - 
+        name: nofile
+        soft: 10000
+        hard: 12000
+    java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook=true
+  comm-msg:
+    image: comm-msg
+    ports:
+      - 8080:8091
+    network: bridge
+    volumes:
+      - /data/server/logs:/data/logs
+    checkHealth:
+      path: /comm-msg/health
+      code: 200
+      timeout: 60
+    ulimits:
+      - 
+        name: nofile
+        soft: 10000
+        hard: 12000
+    java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Xbootclasspath/p:/extdata/alpn-boot-8.1.11.v20170118.jar
+  openapi:
+    image: openapi
+    ports:
+      - 8080:8092
+    network: bridge
+    volumes:
+      - /data/server/logs:/data/logs
+    checkHealth:
+      path: /openapi/health
+      code: 200
+      timeout: 60
+    ulimits:
+      - 
+        name: nofile
+        soft: 10000
+        hard: 12000
+    java_opts: JAVA_OPTS=-Xms512m -Xmx512m

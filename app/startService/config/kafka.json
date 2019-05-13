@@ -1,0 +1,23 @@
+{
+	"repository_base":"registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta",
+	"docker_engine_port":2222,
+	"kafka":{
+		"repo_name":"kafka",
+		"tag":"2.11-1.1.0",
+		"hosts":["172.16.0.209"],
+		"portMap":[9092,9092],
+		"networkMode": "bridge",
+		"volume":["/data/server/kafka/data:/data","/data/server/kafka/logs:/logs"],
+		"ext_env":["rocketmq.config.namesrvAddr=\"172.16.0.200:9876;172.16.0.201:9876\"",
+				   "KAFKA_HEAP_OPTS=\"-Xms512m -Xmx512m\"",
+				   "zkServrs=\"172.16.0.200:2181,172.16.0.201:2181,172.16.0.202:2181\"",
+				   "id=0",
+				   "hostport=172.16.0.209:9092",
+				   "logDirs=/data",
+				   "LOG_DIR=/logs"
+		],
+        "ulimits": [
+    		{"name": "nofile","softLimit": 5000, "hardLimit": 6000}
+    	]		
+	}
+}

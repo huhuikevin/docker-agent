@@ -1,0 +1,60 @@
+docker_agent: http://47.75.72.87:7000
+compose_server: zk
+services:
+  zkserver0:
+    image: zookeeper:v1
+    container: zk-cluster.0
+    hosts:
+      - 172.16.0.200
+    network: host
+    volumes:
+      - /data/server/zookeeper:/data
+    command: /start.sh
+    ulimits:
+      - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    extra_hosts:
+      - zkserver1:172.16.0.200
+      - zkserver2:172.16.0.201
+      - zkserver3:172.16.0.202
+    environment: 
+      - ZOO_LOG_DIR=/data/server
+      - MY_ZK_ID=0
+      - ZK_IP=$HOST_IP
+  zkserver1:
+    image: zookeeper:v1
+    container: zk-cluster.1
+    hosts:
+      - 172.16.0.201
+    network: host
+    volumes:
+      - /data/server/zookeeper:/data
+    command: /start.sh
+    ulimits:
+      - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    extra_hosts:
+      - zkserver1:172.16.0.200
+      - zkserver2:172.16.0.201
+      - zkserver3:172.16.0.202
+    environment: 
+      - ZOO_LOG_DIR=/data/server
+      - MY_ZK_ID=1
+      - ZK_IP=$HOST_IP
+  zkserver2:
+    image: zookeeper:v1
+    container: zk-cluster.2
+    hosts:
+      - 172.16.0.200
+    network: host
+    volumes:
+      - /data/server/zookeeper:/data
+    command: /start.sh
+    ulimits:
+      - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    extra_hosts:
+      - zkserver1:172.16.0.200
+      - zkserver2:172.16.0.201
+      - zkserver3:172.16.0.202
+    environment: 
+      - ZOO_LOG_DIR=/data/server
+      - MY_ZK_ID=2
+      - ZK_IP=$HOST_IP

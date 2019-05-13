@@ -1,0 +1,36 @@
+{
+	"repository":"registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta",
+	"proxy_http":"http://47.75.72.87:7000",
+	"servers":[
+		{
+			"name":"dubbo-admin",
+			"repo_name":"dubbo-admin",
+			"hosts":["172.16.0.202"],
+			"portMap":[8080,4321],
+			"networkMode": "bridge",
+			"volume":["/data/server/dubbo-admin/logs:/logs"],
+			"java_opts":"-Xms128m -Xmx256m"
+		},
+		{
+			"name":"dubbo-monitor",
+			"repo_name":"dubbo-monitor",
+			"hosts":["172.16.0.202"],
+			"portMap":[8080,4322],
+			"networkMode": "bridge",
+			"volume":["/data/server/dubbo-monitor/logs:/logs"],
+			"java_opts":"-Xms128m -Xmx256m"
+		},
+		{
+			"name":"rocketmq-console-ng",
+			"repo_name":"rocketmq-console-ng",
+			"hosts":["172.16.0.202"],
+			"portMap":[8080,4323],
+			"networkMode": "bridge",
+			"volume":["/data/server/rocketmq-console-ng/data:/data"],
+			"java_opts":"-Xms128m -Xmx256m -Drocketmq.config.namesrvAddr=172.16.0.200:9876;172.16.0.201:9876",
+			"ext_env":["rocketmq.config.namesrvAddr=\"172.16.0.200:9876;172.16.0.201:9876\""
+			]	
+		}
+	]
+	
+}

@@ -1,0 +1,169 @@
+{
+	"repository":"registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta",
+	"proxy_http":"http://127.0.0.1:8000",
+	"servers":[
+		{
+			"name":"oauth",
+			"repo_name":"oauth",
+			"hosts":["127.0.0.1"],
+			"portMap":[8080,8080],
+			"dubbo_portMap":[20887,20880],
+			"networkMode": "bridge",
+			"volume":["/data/server/logs:/data/logs"],
+			"export_service":"java",
+			"checkHealth":{"path":"/oauth/health", "code":200, "timeout":60},
+        	"ulimits": [
+    			{"name": "nofile","soft": 10000, "hard": 12000}
+    		],
+			"java_opts":"JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook=true"		
+		},
+		{
+			"name":"community",
+			"repo_name":"community",
+			"hosts":["172.16.0.211"],
+			"portMap":[8080,8081],
+			"dubbo_portMap":[20867,20881],
+			"networkMode": "bridge",
+			"volume":["/data/server/logs:/data/logs"],
+			"checkHealth":{"path":"/community/health", "code":200, "timeout":60},
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    		],		
+			"java_opts":"-Xms512m -Xmx512m -Ddubbo.shutdown.hook=true"
+		},
+		{
+			"name":"order",
+			"repo_name":"order",
+			"hosts":["172.16.0.210"],
+			"portMap":[8080,8082],
+			"dubbo_portMap":[20891,20883],
+			"networkMode": "bridge",
+			"volume":["/data/server/logs:/data/logs"],
+			"checkHealth":{"path":"/order/health", "code":200, "timeout":60},
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    		],		
+			"java_opts":"-Xms512m -Xmx512m -Ddubbo.shutdown.hook=true"
+		},
+		{
+			"name":"payment",
+			"repo_name":"payment",
+			"hosts":["172.16.0.202"],
+			"portMap":[8080,8083],
+			"dubbo_portMap":[20890,20882],
+			"networkMode": "bridge",
+			"volume":["/data/server/logs:/data/logs"],
+			"checkHealth":{"path":"/payment/health", "code":200, "timeout":60},
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    		],		
+			"java_opts":"-Xms128m -Xmx256m -Ddubbo.shutdown.hook=true"
+		},
+		{
+			"name":"srv-route",
+			"repo_name":"srv-route",
+			"hosts":["172.16.0.207"],
+			"portMap":[8080,8084],
+			"networkMode": "bridge",
+			"volume":["/data/server/logs:/data/logs"],
+			"checkHealth":{"path":"/srv/health", "code":404, "timeout":60},
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    		],		
+			"java_opts":"-Xms128m -Xmx256m"
+		},
+		{
+			"name":"logs-downtank",
+			"repo_name":"logs-downtank",
+			"hosts":["172.16.0.207"],
+			"portMap":[8080,8085],
+			"networkMode": "bridge",
+			"volume":["/data/server/logs:/data/logs"],
+			"checkHealth":{"path":"/logs-downtank/health", "code":200, "timeout":60},
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    		],		
+			"java_opts":"-Xms128m -Xmx256m"
+		},	
+		{
+			"name":"common-files",
+			"repo_name":"common-files",
+			"hosts":["172.16.0.207"],
+			"portMap":[8080,8086],
+			"networkMode": "bridge",
+			"volume":["/data/server/logs:/data/logs"],
+			"checkHealth":{"path":"/common/health", "code":404, "timeout":60},
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    		],		
+			"java_opts":"-Xms128m -Xmx256m"
+		},
+		{
+			"name":"console",
+			"repo_name":"console",
+			"hosts":["172.16.0.211"],
+			"portMap":[8080,8088],
+			"networkMode": "bridge",
+			"volume":["/data/server/logs:/data/logs"],
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 5000, "hardLimit": 6000}
+    		],		
+			"java_opts":"-Xms128m -Xmx256m"
+		},
+		{
+			"name":"activity",
+			"repo_name":"activity",
+			"hosts":["172.16.0.210"],
+			"portMap":[8080,8089],
+			"dubbo_portMap":[20887,20884],
+			"networkMode": "bridge",
+			"volume":["/data/server/logs:/data/logs"],
+			"checkHealth":{"path":"/activity/health", "code":200, "timeout":60},
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    		],		
+			"java_opts":"-Xms128m -Xmx256m -Ddubbo.shutdown.hook=true"
+		},
+		{
+			"name":"agent",
+			"repo_name":"agent",
+			"hosts":["172.16.0.210"],
+			"portMap":[8080,8090],
+			"dubbo_portMap":[21867,20885],
+			"networkMode": "bridge",
+			"volume":["/data/server/logs:/data/logs"],
+			"checkHealth":{"path":"/agent/health", "code":200, "timeout":60},
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    		],		
+			"java_opts":"-Xms128m -Xmx256m -Ddubbo.shutdown.hook=true"
+		},
+		{
+			"name":"comm-msg",
+			"repo_name":"comm-msg",
+			"hosts":["172.16.0.202"],
+			"portMap":[8080,8091],
+			"networkMode": "bridge",
+			"volume":["/data/server/logs:/data/logs"],
+			"export_service":"java",
+			"checkHealth":{"path":"/comm-msg/health", "code":404, "timeout":60},
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    		],		
+			"java_opts":"-Xms128m -Xmx256m -Xbootclasspath/p:/extdata/alpn-boot-8.1.11.v20170118.jar"
+		},
+		{
+			"name":"openapi",
+			"repo_name":"openapi",
+			"hosts":["172.16.0.207"],
+			"portMap":[8080,8092],
+			"networkMode": "bridge",
+			"volume":["/data/server/logs:/data/logs"],
+			"checkHealth":{"path":"/openapi/health", "code":200, "timeout":60},
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 5000, "hardLimit": 6000}
+    		],		
+			"java_opts":"-Xms128m -Xmx256m"
+		}							
+	]
+}

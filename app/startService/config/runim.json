@@ -1,0 +1,49 @@
+{
+	"repository":"registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta",
+	"proxy_http":"http://47.75.72.87:7000",
+	"servers":[
+		{
+			"name":"im_server",
+			"repo_name":"im_server",
+			"hosts":["172.16.0.210"],
+			"portMap":[8080,9087],
+			"otherPort":[8090,9088],
+			"networkMode": "bridge",
+			"export_service":"im",
+			"volume":["/data/server/im/logs:/logs"],
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    		],		
+			"ext_env":["ZK_SERVER=\"172.16.0.200:2181,172.16.0.201:2181,172.16.0.202:2181\"",
+				   "MONGO_SERVER=\"mongodb://jwaoo_im:123456@s-j6cfc4998e52dd44.mongodb.rds.aliyuncs.com:3717,s-j6c1b81867724ca4.mongodb.rds.aliyuncs.com:3717/jwaoo_im\"",
+				   "REDIS_SERVER=\"r-j6c1a2df0e7ab504.redis.rds.aliyuncs.com:6379\"",
+				   "MqNameServer=\"172.16.0.200:9876;172.16.0.201:9876\"",
+				   "ACCOUNT=\"http://172.16.0.202:8080\"",
+				   "PUSH=\"http://172.16.0.202:8091\"",
+				   "CLIENTID=5c63f0b2c74d673ea5700180",
+				   "IM_ROLE=SERVER"
+			]
+		},
+		{
+			"name":"im_router",
+			"repo_name":"im_router",
+			"hosts":["172.16.0.210"],
+			"portMap":[8080,9086],
+			"networkMode": "bridge",
+			"export_service":"im",
+			"volume":["/data/server/logs:/logs"],
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+    		],		
+			"ext_env":["ZK_SERVER=\"172.16.0.200:2181,172.16.0.201:2181,172.16.0.202:2181\"",
+				   "MONGO_SERVER=\"mongodb://jwaoo_im:123456@s-j6cfc4998e52dd44.mongodb.rds.aliyuncs.com:3717,s-j6c1b81867724ca4.mongodb.rds.aliyuncs.com:3717/jwaoo_im\"",
+				   "REDIS_SERVER=\"r-j6c1a2df0e7ab504.redis.rds.aliyuncs.com:6379\"",
+				   "MqNameServer=\"172.16.0.200:9876;172.16.0.201:9876\"",
+				   "ACCOUNT=\"http://172.16.0.202:8080\"",
+				   "PUSH=\"http://172.16.0.202:8091\"",
+				   "CLIENTID=5c63f0b2c74d673ea5700180",	
+				   "IM_ROLE=ROUTER"
+			]
+		}			
+	]
+}

@@ -1,0 +1,38 @@
+docker_agent: http://47.75.72.87:7000
+hostips: &hostips
+  - 172.16.0.202
+services:
+  dubbo-admin:
+    image: dubbo-admin
+    container: dubbo-admin
+    hosts: *hostips
+    ports:
+      - '8080:4321'
+    network: bridge
+    volumes:
+      - '/data/server/dubbo-admin/logs:/logs'
+    java_opts: "-Xms128m -Xmx256m"
+
+  dubbo-monitor:
+    image: dubbo-monitor
+    container: dubbo-monitor
+    hosts: *hostips
+    ports:
+      - '8080:4322'
+    network: bridge
+    volumes:
+      - '/data/server/dubbo-monitor/logs:/logs'
+    java_opts: "-Xms128m -Xmx256m"
+
+  rocketmq-console-ng:
+    image: rocketmq-console-ng
+    container: rocketmq-console-ng
+    hosts: *hostips
+    ports:
+      - '8080:4323'
+    network: bridge
+    volumes:
+      - '/data/server/rocketmq-console-ng/logs:/logs'
+    environment:
+      - "rocketmq.config.namesrvAddr=\"172.16.0.200:9876;172.16.0.201:9876\""
+    java_opts: "-Xms128m -Xmx256m -Drocketmq.config.namesrvAddr=172.16.0.200:9876;172.16.0.201:9876"

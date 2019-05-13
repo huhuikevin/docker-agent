@@ -1,0 +1,11 @@
+[Unit]
+Description=OpenBSD Secure Shell server
+After=docker.service
+[Service]
+ExecStart=start.sh
+ExecStop=start.sh kill
+KillMode=process
+Restart=on-failure
+RestartPreventExitStatus=255
+[Install]
+WantedBy=multi-user.target

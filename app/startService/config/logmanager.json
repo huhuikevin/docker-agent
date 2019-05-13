@@ -1,0 +1,47 @@
+{
+	"repository_base":"registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta",
+	"docker_engine_port":2222,
+	"logproducer":{
+		"repo_name":"logproducer",
+		"tag":"v1",
+		"hosts":["172.16.0.202"],
+		"networkMode": "bridge",
+		"volume":["/data:/data"],
+		"run_docker":"true",
+        "ulimits": [
+    		{"name": "nofile","softLimit": 5000, "hardLimit": 6000}
+    	]		
+	},
+	"logcollecter":{
+		"repo_name":"logcollecter",
+		"tag":"v1",
+		"hosts":["172.16.0.211"],
+		"networkMode": "bridge",
+		"volume":["/data/ServerLogs:/logs"],
+		"ext_env":[
+				  "KFKHOSTS=172.16.0.209:9092",
+				  "TOPIC_PREFIX=beatlovanowlog_",
+				  "LOGPATH=/logs"
+		],
+        "ulimits": [
+    		{"name": "nofile","softLimit": 5000, "hardLimit": 6000}
+    	]		
+	},
+	"filebeat_kfk":{
+		"repo_name":"filebeat-kfk-alpine",
+		"tag":"6.4.3",
+		"hosts":["172.16.0.207","172.16.0.211","172.16.0.210"],
+		"networkMode": "bridge",
+		"volume":["/data/filebeat:/filebeat","/data/server/logs:/applogs"],
+		"ext_env":[
+				  "monitor_path=/applogs/*/*.log",
+				  "kafaka_host=172.16.0.209:9092",
+				  "kafaka_topic=beatlovanowlog_$HOSTNAME",
+				  "beatdata_path=/filebeat"
+
+		],
+        "ulimits": [
+    		{"name": "nofile","softLimit": 5000, "hardLimit": 6000}
+    	]		
+	}		
+}

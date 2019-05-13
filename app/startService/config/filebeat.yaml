@@ -1,0 +1,40 @@
+repository: registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta
+docker_agent: http://47.75.72.87:7000
+services:
+  filebeat_logdown:
+    image: filebeat:v4
+    container: filebeat-logdown
+    hosts:
+      - 172.16.0.207
+    network: host
+    volumes:
+      - '/data/server/filebeat:/data'
+      - '/data/server/logs/logs-downtank:/applogs'
+    environment:
+      - 'LSHOSTS=172.16.0.209:5044'
+    ulimits:
+      - 
+        name: nofile
+        softLimit: 5000
+        hardLimit: 6000
+  filebeat-kfk: 
+    image: filebeat-kfk-alpine:6.4.3
+    container: filebeat-kfk
+    hosts:
+      - 172.16.0.207
+      - 172.16.0.210
+      - 172.16.0.211
+    network: host
+    volume:
+      - '/data/server/filebeat-kfk:/filebeat'
+      - '/data/server/logs:/applogs'
+    environment:
+      - 'monitor_path=/applogs/*/*.log'
+      - 'kafaka_host=172.16.0.209:9092'
+      - 'kafaka_topic=beatlovanowlog_$HOSTNAME'
+      - 'beatdata_path=/filebeat'
+    ulimits:
+      - 
+        name: nofile
+        softLimit: 5000
+        hardLimit: 6000

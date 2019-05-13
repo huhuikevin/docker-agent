@@ -1,0 +1,21 @@
+{
+	"repository":"registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta",
+	"proxy_http":"http://47.75.72.87:7000",
+	"servers":[
+		{
+			"name":"elasticsearch",
+			"repo_name":"elasticsearch",
+			"tag":"5.4.3-ali",
+			"hosts":["172.16.0.209"],
+			"networkMode": "host",
+			"volume":["/data/server/elasticsearch/data:/usr/share/elasticsearch/data",
+				  "/data/server/elasticsearch/logs:/usr/share/elasticsearch/logs",
+				  "/data/server/elasticsearch/backup:/usr/share/elasticsearch/backup"
+				  ],
+        	"ulimits": [
+    			{"name": "nofile","softLimit": 5000, "hardLimit": 6000}
+    		],				  
+			"ext_env":["ES_JAVA_OPTS=\"-Xms512m -Xmx512m\""]
+		}
+	]
+}
