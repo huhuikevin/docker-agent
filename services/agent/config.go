@@ -46,5 +46,9 @@ var agentConfigration = agentConfig{}
 
 //LoadYAMLConfig load yaml config
 func LoadYAMLConfig(config string) error {
-	return uitls.LoadYAML(config, &agentConfigration)
+	err := uitls.LoadYAML(config, &agentConfigration)
+	if agentConfigration.Logs.Path == "" {
+		agentConfigration.Logs.Path = "/logs"
+	}
+	return err
 }

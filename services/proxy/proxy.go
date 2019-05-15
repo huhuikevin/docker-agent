@@ -186,7 +186,10 @@ func httpTransfer(ctx *gin.Context) {
 //StartProxyWithConfigFile start proxy using config file
 func StartProxyWithConfigFile(config string) {
 	LoadYAMLConfig(config)
-	InitRouteTalbe()
+	//InitRouteTalbe()
+	if proxyConfigration.Logs.Path != "" {
+		log.Init(proxyConfigration.Logs.Path)
+	}
 	StartProxyServer(proxyConfigration.Port)
 }
 

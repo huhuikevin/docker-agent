@@ -240,6 +240,9 @@ func StartAgentWithConfigFile(file string) {
 		logger.Println("load yaml config error, " + err.Error())
 		return
 	}
+	if agentConfigration.Logs.Path != "" {
+		logger.Init(agentConfigration.Logs.Path)
+	}
 	if agentConfigration.Docker.Cloud == "aws" {
 		tokens := uitls.GetAwsToken(agentConfigration.Docker.Regin)
 		if tokens != nil && len(tokens) == 2 {

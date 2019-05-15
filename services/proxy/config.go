@@ -36,5 +36,9 @@ var proxyConfigration = proxyConfig{}
 
 //LoadYAMLConfig load yaml config
 func LoadYAMLConfig(config string) error {
-	return uitls.LoadYAML(config, &proxyConfigration)
+	err := uitls.LoadYAML(config, &proxyConfigration)
+	if proxyConfigration.Logs.Path == "" {
+		proxyConfigration.Logs.Path = "/logs"
+	}
+	return err
 }

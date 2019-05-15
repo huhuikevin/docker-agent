@@ -28,6 +28,15 @@ func PullDockerImage(image string, user string, pwd string) error {
 		log.Println("get Client error=", err)
 		return err
 	}
+
+	if user == "" || pwd == "" {
+		if err := client.PullImageWithOutAuth(image); err != nil {
+			log.Println("pull image error=", err)
+			return err
+		}
+		return nil
+	}
+
 	if err := client.PullImageWithAuth(image, user, pwd); err != nil {
 		log.Println("pull image error=", err)
 		return err

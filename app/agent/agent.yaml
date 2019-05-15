@@ -6,7 +6,7 @@ proxy:
   services: [oauth,common-msg,common-file]
   beatheart: 2
 logs:
-  path: /data/server/agent
+  path: /logs
 docker:
   cloud: ali
   regin: hongkong
