@@ -1,22 +1,24 @@
 #!/bin/sh
 
 #放到云主机的clould-init 脚本中运行
+mkdir -p /etc/jwaoo
 
-script=/data/server/appAgent/start.sh
+script=/data/server/agent/start.sh
 #script=start.sh
-config=/data/server/appAgent/config.yaml
+config=/etc/jwaoo/agent.yaml
 #config=config111.yaml
 systempath=/lib/systemd/system
 #systempath=./
 service=agent.service
 servicefile=$systempath/$service
 networkdev=eth0
-port=8001
-proxyserver="http://192.168.10.114:8000"
+port=8080
+ext_port=2000
+proxyserver="http://192.168.10.114:2000"
 registry="registry-vpc.cn-hongkong.aliyuncs.com"
 username="kevin@1734249857609980"
 password="Reg&0928"
-image="$registry/lovanow_beta/appagent:v1"
+image="$registry/lovanow_beta/agent:v1"
 ip=`/sbin/ifconfig $networkdev|grep inet|grep -v inet6|awk '{print $2}'|tr -d "addr:"`
 runningsrv="oauth,common-msg,common-file"
 create_config()
@@ -29,13 +31,11 @@ create_config()
 	echo "  services: [$runningsrv]" >> $config
 	echo "  beatheart: 2" >> $config
 	echo "docker:" >> $config
-	echo "  cloud: ali" >> $config
-	echo "  regin: hongkong" >> $config
 	echo "  reposity: $registry" >> $config
 	echo "  username: '$username'" >> $config
 	echo "  password: '$password'" >> $config
 	echo "logs:" >> $config
-	echo "  path: /data/server/agent" >> $config
+	echo "  path: /logs" >> $config
 }
 
 
@@ -62,14 +62,14 @@ create_service()
 
 create_script()
 {
-	mkdir -p /data/server/appAgent
+	mkdir -p /data/server/agent
 	echo "#!/bin/sh" > $script
 
 	echo "mode=\$1" >> $script
 
-	echo "registry=registry-vpc.cn-hongkong.aliyuncs.com" >> $script
+	echo "registry=$registry" >> $script
 	echo "image=$image" >> $script
-	echo "docker_name=appagent" >> $script
+	echo "docker_name=agent" >> $script
 
 	echo "kill_docker()" >> $script
 	echo "{" >> $script
@@ -87,8 +87,8 @@ create_script()
 	echo "start_docker()" >> $script
 	echo "{" >> $script
     echo "	docker login -u \"$username\" -p \"$password\" $registry" >> $script
-    echo "  docker pull \$image" >> $script
-    echo "	docker run -d --rm --name \$docker_name --net=bridge -v /var/run/docker.sock:/var/run/docker.sock --env APP_PORT=$port --env HOST_IP=$ip -p $port:8000 \$image" >> $script
+    echo "	docker pull \$image" >> $script
+    echo "	docker run -d --rm --name \$docker_name --net=bridge -v /data/server/agent/logs:/logs-v /var/run/docker.sock:/var/run/docker.sock --env APP_PORT=$ext_port --env HOST_IP=$ip -p $ext_port:$port \$image" >> $script
 	echo "}" >> $script
 
 	echo "kill_docker" >> $script

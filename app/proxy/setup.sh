@@ -1,16 +1,17 @@
 #!/bin/sh
 
 #放到云主机的clould-init 脚本中运行
-
-script=/data/server/appProxy/start.sh
-config=/data/server/appProxy/config.yaml
+mkdir -p /etc/jwaoo
+script=/data/server/proxy/start.sh
+config=/etc/jwaoo/proxy.yaml
 systempath=/lib/systemd/system
 #config=config111.yaml
 #script=start.sh
 #systempath=./
 service=proxy.service
 servicefile=$systempath/$service
-port=8001
+port=8080
+ext_port=2000
 proxyserver="http://192.168.10.114:8000"
 registry="registry-vpc.cn-hongkong.aliyuncs.com"
 username="kevin@1734249857609980"
@@ -58,9 +59,9 @@ create_script()
 
 	echo "mode=\$1" >> $script
 
-	echo "registry=registry-vpc.cn-hongkong.aliyuncs.com" >> $script
+	echo "registry=$registry" >> $script
 	echo "image=$image" >> $script
-	echo "docker_name=appagent" >> $script
+	echo "docker_name=proxy" >> $script
 
 	echo "kill_docker()" >> $script
 	echo "{" >> $script
@@ -79,7 +80,7 @@ create_script()
 	echo "{" >> $script
     echo "	docker login -u \"$username\" -p \"$password\" $registry" >> $script
     echo "  docker pull \$image" >> $script
-    echo "	docker run -d --rm --name \$docker_name --net=bridge -p $port:8000 \$image" >> $script
+    echo "	docker run -d --rm --name \$docker_name --net=bridge -p $ext_port:$port \$image" >> $script
 	echo "}" >> $script
 
 	echo "kill_docker" >> $script
