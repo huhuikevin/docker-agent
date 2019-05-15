@@ -79,7 +79,7 @@ create_script()
 	echo "start_docker()" >> $script
 	echo "{" >> $script
     echo "	docker login -u \"$username\" -p \"$password\" $registry" >> $script
-    echo "  docker pull \$image" >> $script
+    echo "	docker pull \$image" >> $script
     echo "	docker run -d --rm --name \$docker_name --net=bridge -p $ext_port:$port \$image" >> $script
 	echo "}" >> $script
 
