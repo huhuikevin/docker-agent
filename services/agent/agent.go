@@ -20,6 +20,7 @@ type serverParams common.ServerParams
 
 //myIP 本机ip地址，可以外网连接的，不是docker，loopback等地址
 var myIP = ""
+var myPort = int16(0)
 
 //newResult 封装common.NewResult，加入host
 func newResult(errorcode common.ErrorCode) *common.RequstResult {
@@ -143,6 +144,7 @@ func runRegisterRoutine(quit <-chan int) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	register := true //ture 需要register，false 需要keepalive
+	keepfailt := 5
 	go func() {
 		defer wg.Done()
 		logger.Println("runRegisterRoutine")
@@ -153,14 +155,20 @@ func runRegisterRoutine(quit <-chan int) {
 					if err := doRegister(); err == nil {
 						logger.Println("runRegisterRoutine done")
 						register = false
+						keepfailt = 5
 					}
 				} else {
 					if err := doKeeperAlive(); err == nil {
 						logger.Println("doKeeperAlive done")
 						register = false
 					} else {
-						logger.Println("switch to  doRegister")
-						register = true
+						keepfailt--
+						if keepfailt > 0 {
+							logger.Println("doKeeperAlive failt , count", keepfailt)
+						} else {
+							logger.Println("switch to  doRegister")
+							register = true
+						}
 					}
 				}
 			case <-quit:
@@ -173,29 +181,28 @@ func runRegisterRoutine(quit <-chan int) {
 	wg.Wait()
 }
 
-func ip() string {
-	ip := os.Getenv("HOST_IP")
-	if ip == "" {
-		ip = uitls.GetLocalIPByAccessHTTPServer(agentConfigration.Proxy.Server)
+func ipport() string {
+	myIP = os.Getenv("HOST_IP")
+	if myIP == "" {
+		myIP = uitls.GetLocalIPByAccessHTTPServer(agentConfigration.Proxy.Server)
 	}
-	port := agentConfigration.Port
+	myPort = agentConfigration.Port
 	ports := os.Getenv("APP_PORT")
 	if ports != "" {
 		_port, err := strconv.Atoi(ports)
 		if err != nil {
 			return ""
 		}
-		port = int16(_port)
+		myPort = int16(_port)
 	}
 
-	return fmt.Sprintf("%s:%d", ip, port)
+	return fmt.Sprintf("%s:%d", myIP, myPort)
 }
 
 func myIPPORT() (string, error) {
-	host := myIP
-	if host == "" {
-		host = ip()
-		myIP = host
+	host := fmt.Sprintf("%s:%d", myIP, myPort)
+	if myIP == "" {
+		host = ipport()
 	}
 	if host == "" {
 		return "", errors.New("get local ip error")
@@ -211,7 +218,7 @@ func doRegister() error {
 	}
 	logger.Println("registerURL=", registerURL)
 
-	logger.Println("myip=", host)
+	logger.Println("ipport=", host, "myIP=", myIP, "myPort=", myPort)
 	params := common.RegisterParams{Services: agentConfigration.Proxy.Services, Host: host}
 	result := common.DoHTTPPostJSON(registerURL, params)
 	if result.Code == common.Success {

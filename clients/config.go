@@ -64,9 +64,9 @@ func LoadConfigfileByServer(path string, server string) *RunningConfig {
 	for _, file := range cfgfiles {
 		temp := RunningConfig{}
 		//loadJSON(file, &temp)
-		fmt.Println(file)
+		//fmt.Println(file)
 		loadYAML(file, &temp)
-		fmt.Println(temp)
+		//fmt.Println(temp)
 		if isServerConfig(server, temp) {
 			config = temp
 			fmt.Println("found config file:", file)
