@@ -3,7 +3,7 @@
 #PROXYSERVER, SERVERS=oauth,common-files, REGISTRY
 app=$APP
 config=/etc/jwaoo/$app.yaml
-create_config()
+create_agent_config()
 {
 	echo "port: $PORT" > $config
 	echo "proxy:" >> $config
@@ -16,6 +16,17 @@ create_config()
 	echo "  reposity: $REGISTRY" >> $config
 }
 
-create_config
+create_proxy_config()
+{
+	echo "port: $PORT" > $config
+	echo "checkagent:" >> $config
+	echo "  interval: 10" >> $config
+}
+
+if [ "$app"x == "agent"x ];then
+    create_agent_config
+else
+    create_proxy_config
+fi
 
 exec /usr/bin/$app

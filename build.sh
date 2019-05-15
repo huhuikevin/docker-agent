@@ -13,7 +13,7 @@ if [ $? != 0 ];then
 fi
 
 dockerfile=Dockerfile
-start=$GOPATH/src/github.com/huhuikevin/docker-agentstart.sh
+start=start.sh
 createDockerfile()
 {
 	echo "FROM alpine:latest as prod" > $dockerfile
@@ -27,7 +27,7 @@ createDockerfile()
 
 	echo "COPY $start /usr/bin/" >> $dockerfile
 
-	echo "RUN chmod a+x $app && chmod a+x $start" >> $dockerfile
+	echo "RUN mkdir -p /etc/jwaoo && chmod a+x $app && chmod a+x $start" >> $dockerfile
 
 	echo "CMD [\"$start\"]" >> $dockerfile
 
@@ -39,6 +39,7 @@ if [ "$app"x == "proxy"x -o "$app"x == "agent"x ];then
 	rm -rf dockerbuild
 	mkdir dockerbuild
 	cp $GOPATH/bin/linux_amd64/$app dockerbuild/
+	cp $GOPATH/src/github.com/huhuikevin/docker-agent/start.sh dockerbuild/
 	cd dockerbuild/
 
 	createDockerfile
