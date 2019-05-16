@@ -90,6 +90,7 @@ func AddAgent(agent *Agent) {
 		delete(agents, exsited.Host)
 	}
 	agents[agent.Host] = agent
+	logger.Println("add agent:", agent.Host)
 	agentLock.Unlock()
 	if exsited != nil {
 		exsited.stopCheckAvlible()
@@ -215,7 +216,6 @@ func (agent *Agent) StartCheckAvalible() {
 }
 
 func (agent *Agent) checkAvalible() {
-	logger.Println("checkAvalible.....")
 	agent.Timer = time.NewTicker(time.Duration(proxyConfigration.Checkagent.Interval) * time.Second)
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -224,13 +224,12 @@ func (agent *Agent) checkAvalible() {
 		for {
 			select {
 			case <-agent.Timer.C:
-				logger.Println("time out")
 				time := time.Now().Unix()
 				if (time - agent.KeepTimeStamp) >= int64(proxyConfigration.Checkagent.Interval) {
 					agent.processError()
 				}
 			case <-agent.QuitCh:
-				logger.Println("Recv Quit signal")
+				//logger.Println("Recv Quit signal")
 				agent.Timer.Stop()
 				return
 			}
@@ -245,7 +244,6 @@ func (agent *Agent) processError() {
 }
 
 func (agent *Agent) stopCheckAvlible() {
-	logger.Println("stop check avlible for Host ", agent.Host)
 	agent.QuitCh <- 1 //stop check routine
 	select {
 	case <-agent.WaitQuitCh:

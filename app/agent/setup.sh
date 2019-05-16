@@ -1,6 +1,23 @@
 #!/bin/sh
 
 #放到云主机的clould-init 脚本中运行
+#这台host上需要运行哪些服务
+runningsrv="oauth,common-msg,common-file"
+#proxy 代理地址，agent启动的时候需要注册到proxy
+proxyserver="http://192.168.10.114:2000"
+#docker registry 地址
+registry="registry-vpc.cn-hongkong.aliyuncs.com"
+#docker agent的镜像名称
+image="$registry/lovanow_beta/agent:v1"
+#用户名密码
+username="sensenow"
+password="jwaoo2017$"
+
+#agent的监听端口
+port=8080
+#对外暴露的端口,注册到proxy的时候用host的ip+ext_port
+ext_port=2000
+
 mkdir -p /etc/jwaoo
 
 script=/data/server/agent/start.sh
@@ -12,15 +29,8 @@ systempath=/lib/systemd/system
 service=agent.service
 servicefile=$systempath/$service
 networkdev=eth0
-port=8080
-ext_port=2000
-proxyserver="http://192.168.10.114:2000"
-registry="registry-vpc.cn-hongkong.aliyuncs.com"
-username="kevin@1734249857609980"
-password="Reg&0928"
-image="$registry/lovanow_beta/agent:v1"
 ip=`/sbin/ifconfig $networkdev|grep inet|grep -v inet6|awk '{print $2}'|tr -d "addr:"`
-runningsrv="oauth,common-msg,common-file"
+
 create_config()
 {
 	echo "port: $port" > $config
@@ -88,7 +98,7 @@ create_script()
 	echo "{" >> $script
     echo "	docker login -u \"$username\" -p \"$password\" $registry" >> $script
     echo "	docker pull \$image" >> $script
-    echo "	docker run -d --rm --name \$docker_name --net=bridge -v /data/server/agent/logs:/logs-v /var/run/docker.sock:/var/run/docker.sock --env APP_PORT=$ext_port --env HOST_IP=$ip -p $ext_port:$port \$image" >> $script
+    echo "	docker run -d --rm --name \$docker_name --net=bridge -v $config:$config -v /data/server/agent/logs:/logs -v /var/run/docker.sock:/var/run/docker.sock --env APP=agent --env APP_PORT=$ext_port --env HOST_IP=$ip -p $ext_port:$port \$image" >> $script
 	echo "}" >> $script
 
 	echo "kill_docker" >> $script
@@ -100,7 +110,7 @@ create_script()
 }
 
 apt-get update
-apt-get install docker.io
+apt-get install -y -q docker.io
 
 create_config
 create_script
