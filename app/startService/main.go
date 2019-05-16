@@ -85,7 +85,7 @@ func startDocker(url string, info map[string]interface{}) error {
 	for {
 		result := common.DoHTTPPostJSON(url, info)
 		if result.Code != common.Success {
-			fmt.Println(result.Message, "Try again")
+			fmt.Println(result.Message, "Try again", result.Data)
 		} else {
 			fmt.Println("SUCCESS ==> ", result.Message)
 			return nil

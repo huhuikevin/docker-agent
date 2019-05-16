@@ -2,9 +2,9 @@
 
 #放到云主机的clould-init 脚本中运行
 #这台host上需要运行哪些服务
-runningsrv="oauth,common-msg,common-file"
+runningsrv="fastdfs, zookeeper"
 #proxy 代理地址，agent启动的时候需要注册到proxy
-proxyserver="http://192.168.10.114:2000"
+proxyserver="http://192.168.0.141:2000"
 #docker registry 地址
 registry="registry-vpc.cn-hongkong.aliyuncs.com"
 #docker agent的镜像名称
@@ -41,7 +41,7 @@ create_config()
 	echo "  services: [$runningsrv]" >> $config
 	echo "  beatheart: 2" >> $config
 	echo "docker:" >> $config
-	echo "  reposity: $registry" >> $config
+	echo "  reposity: $registry/lovanow_beta" >> $config
 	echo "  username: '$username'" >> $config
 	echo "  password: '$password'" >> $config
 	echo "logs:" >> $config
@@ -115,6 +115,8 @@ apt-get install -y -q docker.io
 create_config
 create_script
 create_service
+
+sleep 5
 
 systemctl daemon-reload
 

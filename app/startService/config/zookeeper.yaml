@@ -1,60 +1,57 @@
-docker_agent: http://47.75.72.87:7000
-compose_server: zk
+docker_agent: http://47.75.144.156:2000
+compose_server: zookeeper
 services:
   zkserver0:
     image: zookeeper:v1
     container: zk-cluster.0
     hosts:
-      - 172.16.0.200
+      - 192.168.0.140
     network: host
     volumes:
       - /data/server/zookeeper:/data
-    command: /start.sh
+    command: [/start.sh]
     ulimits:
       - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
     extra_hosts:
-      - zkserver1:172.16.0.200
-      - zkserver2:172.16.0.201
-      - zkserver3:172.16.0.202
+      - zkserver1:192.168.0.140
+      - zkserver2:192.168.0.142
+      - zkserver3:192.168.0.143
     environment: 
-      - ZOO_LOG_DIR=/data/server
-      - MY_ZK_ID=0
-      - ZK_IP=$HOST_IP
+      - myid=0
+      - zkip=$HOST_IP
   zkserver1:
     image: zookeeper:v1
     container: zk-cluster.1
     hosts:
-      - 172.16.0.201
+      - 192.168.0.142
     network: host
     volumes:
       - /data/server/zookeeper:/data
-    command: /start.sh
+    command: [/start.sh]
     ulimits:
       - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
     extra_hosts:
-      - zkserver1:172.16.0.200
-      - zkserver2:172.16.0.201
-      - zkserver3:172.16.0.202
+      - zkserver1:192.168.0.140
+      - zkserver2:192.168.0.142
+      - zkserver3:192.168.0.143
     environment: 
-      - ZOO_LOG_DIR=/data/server
-      - MY_ZK_ID=1
-      - ZK_IP=$HOST_IP
+      - myid=1
+      - zkip=$HOST_IP
   zkserver2:
     image: zookeeper:v1
     container: zk-cluster.2
     hosts:
-      - 172.16.0.200
+      - 192.168.0.143
     network: host
     volumes:
       - /data/server/zookeeper:/data
-    command: /start.sh
+    command: [/start.sh]
     ulimits:
       - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
     extra_hosts:
-      - zkserver1:172.16.0.200
-      - zkserver2:172.16.0.201
-      - zkserver3:172.16.0.202
+      - zkserver1:192.168.0.140
+      - zkserver2:192.168.0.142
+      - zkserver3:192.168.0.143
     environment: 
-      - ZOO_LOG_DIR=/data/server
-      - MY_ZK_ID=2
-      - ZK_IP=$HOST_IP
+      - myid=2
+      - zkip=$HOST_IP

@@ -90,7 +90,7 @@ func AddAgent(agent *Agent) {
 		delete(agents, exsited.Host)
 	}
 	agents[agent.Host] = agent
-	logger.Println("add agent:", agent.Host)
+	logger.Println("add agent:", agent.Host, "services=", agent.Servers)
 	agentLock.Unlock()
 	if exsited != nil {
 		exsited.stopCheckAvlible()

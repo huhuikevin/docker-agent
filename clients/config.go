@@ -42,7 +42,7 @@ type ServerConfig struct {
 	JavaOpts     string      `json:"java_opts,omitempty" yaml:"java_opts,omitempty"`
 	ExtEnv       []string    `json:"environment,omitempty" yaml:"environment,omitempty"`
 	ExtraHosts   []string    `json:"extra_hosts,omitempty" yaml:"extra_hosts,omitempty"`
-	RunCmd       []string    `json:"runCmd,omitempty" yaml:"runCmd,omitempty"`
+	RunCmd       []string    `json:"command,omitempty" yaml:"command,omitempty"`
 }
 
 //RunningConfig read from json or yaml config files

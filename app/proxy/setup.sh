@@ -60,7 +60,7 @@ create_service()
 
 create_script()
 {
-	mkdir -p /data/server/appAgent
+	mkdir -p /data/server/proxy
 	echo "#!/bin/sh" > $script
 
 	echo "mode=\$1" >> $script
@@ -103,6 +103,8 @@ apt-get install -y -q docker.io
 create_config
 create_script
 create_service
+
+sleep 5
 
 systemctl daemon-reload
 

@@ -1,5 +1,4 @@
-repository: registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta
-docker_agent: http://192.168.10.114:8000
+docker_agent: http://47.75.144.156:2000
 services:
   oauth:
     image: oauth

@@ -1,30 +1,29 @@
-repository: registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta
-docker_agent: http://47.75.72.87:7000
+docker_agent: http://47.75.144.156:2000
 compose_server: rocketmq
 services:
   mq-namesrv:
-    image: rocketmq:v2
+    image: rocketmq-4.2.0:v2
     container: mq-namesrv
     hosts:
-      - 172.16.0.200
-      - 172.16.0.201
+      - 192.168.0.144
+      - 192.168.0.145
     network: host
     volumes:
       - /data/server/rocketmq:/data
-    command: /start.sh
+    command: [/start.sh]
     ulimits:
       - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
     environment: 
       - role=namesrv
   mq-broker-a:
-    image: rocketmq:v2
+    image: rocketmq-4.2.0:v2
     container: mq-broker-a
     hosts:
-      - 172.16.0.200
+      - 192.168.0.144
     network: host
     volumes:
       - /data/server/rocketmq:/data
-    command: /start.sh
+    command: [/start.sh]
     ulimits:
       - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
     environment: 
@@ -32,16 +31,16 @@ services:
       - cname=lovanow_beta
       - brokerName=broker-a
       - brokerip=$HOST_IP
-      - namesrvAddr=172.16.0.201:9876;172.16.0.200:9876
+      - namesrvAddr=192.168.0.144:9876;192.168.0.145:9876
   mq-broker-b:
-    image: rocketmq:v2
+    image: rocketmq-4.2.0:v2
     container: mq-broker-b
     hosts:
-      - 172.16.0.201
+      - 192.168.0.145
     network: host
     volumes:
       - /data/server/rocketmq:/data
-    command: /start.sh
+    command: [/start.sh]
     ulimits:
       - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
     environment: 
@@ -49,4 +48,4 @@ services:
       - cname=lovanow_beta
       - brokerName=broker-b
       - brokerip=$HOST_IP
-      - namesrvAddr=172.16.0.201:9876;172.16.0.200:9876
+      - namesrvAddr=192.168.0.144:9876;192.168.0.145:9876

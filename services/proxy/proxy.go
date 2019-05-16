@@ -53,6 +53,11 @@ func postStartCmdToAgent(server string, params *common.ServerParams) []*common.R
 	//如果参数中指定要在哪个IP对应的host上运行，找到这个IP对应的agent，这个一般在启动基础服务的时候需要
 	if params.Host != "" {
 		agent := GetAgentByHostIP(params.Host)
+		if agent == nil {
+			errResult := common.NewResult(common.CannotFoundAvalibleHost)
+			messages = append(messages, errResult)
+			return messages
+		}
 		result := agent.StartServiceByName(server, params)
 		messages = append(messages, result)
 		return messages
@@ -76,6 +81,11 @@ func postCheckhealCmdToAgend(server string, params *common.ServerParams) []*comm
 	//如果参数中指定要在哪个IP对应的host上运行，找到这个IP对应的agent，这个一般在启动基础服务的时候需要
 	if params.Host != "" {
 		agent := GetAgentByHostIP(params.Host)
+		if agent == nil {
+			errResult := common.NewResult(common.CannotFoundAvalibleHost)
+			messages = append(messages, errResult)
+			return messages
+		}
 		result := agent.CheckServiceHealthByName(server, params)
 		messages = append(messages, result)
 		return messages
