@@ -12,7 +12,7 @@ services:
       - /data/server/rocketmq:/data
     command: [/start.sh]
     ulimits:
-      - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     environment: 
       - role=namesrv
   mq-broker-a:
@@ -25,7 +25,7 @@ services:
       - /data/server/rocketmq:/data
     command: [/start.sh]
     ulimits:
-      - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     environment: 
       - role=master_noslave
       - cname=lovanow_beta
@@ -42,7 +42,7 @@ services:
       - /data/server/rocketmq:/data
     command: [/start.sh]
     ulimits:
-      - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     environment: 
       - role=master_noslave
       - cname=lovanow_beta

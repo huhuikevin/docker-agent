@@ -23,8 +23,8 @@ type HealthCheck struct {
 //Ulimits define the service's ulimits of the linux system
 type Ulimits struct {
 	Name string `json:"name,omitempty" yaml:"name,omitempty"`
-	Soft int    `json:"softLimit,omitempty" yaml:"softLimit,omitempty"`
-	Hard int    `json:"hardLimit,omitempty" yaml:"hardLimit,omitempty"`
+	Soft int    `json:"soft,omitempty" yaml:"soft,omitempty"`
+	Hard int    `json:"hard,omitempty" yaml:"hard,omitempty"`
 }
 
 //ServerConfig read from json or yaml config files to define the server properties

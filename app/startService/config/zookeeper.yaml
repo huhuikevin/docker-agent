@@ -11,7 +11,7 @@ services:
       - /data/server/zookeeper:/data
     command: [/start.sh]
     ulimits:
-      - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     extra_hosts:
       - zkserver1:192.168.0.140
       - zkserver2:192.168.0.142
@@ -29,7 +29,7 @@ services:
       - /data/server/zookeeper:/data
     command: [/start.sh]
     ulimits:
-      - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     extra_hosts:
       - zkserver1:192.168.0.140
       - zkserver2:192.168.0.142
@@ -47,7 +47,7 @@ services:
       - /data/server/zookeeper:/data
     command: [/start.sh]
     ulimits:
-      - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     extra_hosts:
       - zkserver1:192.168.0.140
       - zkserver2:192.168.0.142

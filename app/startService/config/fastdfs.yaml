@@ -13,10 +13,7 @@ services:
       - '/data/server/fastdfs:/data'
     command: [/start.sh,tracker]
     ulimits:
-      - 
-        name: nofile
-        softLimit: 5000
-        hardLimit: 6000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
   fdfs_storage:
     image: fastdfs:v2
     container: fdfs-storage
@@ -34,8 +31,5 @@ services:
       - 'BIND_ADDR=$HOST_IP'
       - 'WEB_PORT=8000'
     ulimits:
-      - 
-        name: nofile
-        softLimit: 5000
-        hardLimit: 6000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
 

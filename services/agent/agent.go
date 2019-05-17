@@ -66,6 +66,7 @@ func processStartServer(server string, params serverParams, ctx *gin.Context) er
 	params.Image = getDockerImage(params.Image)
 	logger.Println("Start Docker:", params.Image)
 	logger.Println("Docker name:", params.ContainerName)
+	logger.Println("params:", params)
 	if err := uitls.PullDockerImage(params.Image, agentConfigration.Docker.Username, agentConfigration.Docker.Password); err != nil {
 		httpResult := newResult(common.PullImageError)
 		httpResult.Data = err.Error()

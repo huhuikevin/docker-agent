@@ -68,9 +68,9 @@ func checkHealth(server string, info map[string]interface{}) error {
 			return nil
 		}
 		fmt.Println("Wait for Healthy ............")
-		data := result.Data.([]common.RequstResult)
-		for _, d := range data {
-			fmt.Println(d.Message)
+		details := getResultsFromResultData(result.Data)
+		for _, detail := range details {
+			fmt.Println("on host", detail.Host, detail.Message, ":", detail.Data)
 		}
 		count = count - 1
 		if count <= 0 {

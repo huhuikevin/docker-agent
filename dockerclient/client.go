@@ -19,8 +19,8 @@ type Client struct {
 //ULimit linux system limite
 type ULimit struct {
 	Name string `json:"name,omitempty" yaml:"name,omitempty" toml:"name,omitempty"`
-	Soft int64  `json:"softLimit,omitempty" yaml:"softLimit,omitempty" toml:"softLimit,omitempty"`
-	Hard int64  `json:"hardLimit,omitempty" yaml:"hardLimit,omitempty" toml:"hardLimit,omitempty"`
+	Soft int64  `json:"soft,omitempty" yaml:"soft,omitempty" toml:"soft,omitempty"`
+	Hard int64  `json:"hard,omitempty" yaml:"hard,omitempty" toml:"soft,omitempty"`
 }
 
 //ContainerConfig docker start config
