@@ -76,6 +76,34 @@ func postStartCmdToAgent(server string, params *common.ServerParams) []*common.R
 	return messages
 }
 
+func postStopCmdToAgent(server string, params *common.ServerParams) []*common.RequstResult {
+	messages := make([]*common.RequstResult, 0)
+	//如果参数中指定要在哪个IP对应的host上运行，找到这个IP对应的agent，这个一般在启动基础服务的时候需要
+	if params.Host != "" {
+		agent := GetAgentByHostIP(params.Host)
+		if agent == nil {
+			errResult := common.NewResult(common.CannotFoundAvalibleHost)
+			messages = append(messages, errResult)
+			return messages
+		}
+		result := agent.StopServiceByName(server, params)
+		messages = append(messages, result)
+		return messages
+	}
+	agents := GetAgentsByServerName(server)
+	log.Println("agent = ", agents)
+	if len(agents) == 0 {
+		errResult := common.NewResult(common.CannotFoundAvalibleHost)
+		messages = append(messages, errResult)
+		return messages
+	}
+	for _, agent := range agents {
+		result := agent.StopServiceByName(server, params)
+		messages = append(messages, result)
+	}
+	return messages
+}
+
 func postCheckhealCmdToAgend(server string, params *common.ServerParams) []*common.RequstResult {
 	messages := make([]*common.RequstResult, 0)
 	//如果参数中指定要在哪个IP对应的host上运行，找到这个IP对应的agent，这个一般在启动基础服务的时候需要
@@ -135,7 +163,25 @@ func httpTransfer(ctx *gin.Context) {
 			logger.Println("JSON bind失败")
 			return
 		}
-		if strings.Contains(ctx.Request.URL.Path, "/start/") {
+		if strings.Contains(ctx.Request.URL.Path, "/stop/") {
+			results := postStopCmdToAgent(server, &params)
+			statusCode := http.StatusOK
+			for _, result := range results {
+				if result.Code != common.Success {
+					statusCode = http.StatusBadRequest
+					break
+				}
+			}
+			if statusCode != http.StatusOK {
+				resultData := common.NewResult(common.StartServiceError)
+				resultData.Data = results
+				ctx.JSON(statusCode, resultData)
+				return
+			}
+			resultData := common.NewResult(common.Success)
+			resultData.Data = results
+			ctx.JSON(statusCode, resultData)
+		} else if strings.Contains(ctx.Request.URL.Path, "/start/") {
 			results := postStartCmdToAgent(server, &params)
 			statusCode := http.StatusOK
 			for _, result := range results {
@@ -208,6 +254,7 @@ func StartProxyServer(port int16) {
 	engine := gin.Default()
 	group := engine.Group("/api/v1")
 	group.POST("/start/:server", httpTransfer)
+	group.POST("/stop/:server", httpTransfer)
 	group.POST("/check/:server", httpTransfer)
 	group.GET("/status/:server", httpTransfer)
 	group.POST("/register", httpProcessRegister)

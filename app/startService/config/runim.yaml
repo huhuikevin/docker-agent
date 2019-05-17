@@ -1,4 +1,3 @@
-repository: registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta
 docker_agent: http://47.75.72.87:7000
 services:
   im_server:
@@ -12,19 +11,17 @@ services:
     volumes:
       - '/data/server/logs/im_server:/logs'
     environment:
-      - 'ZK_SERVER=172.16.0.200:2181,172.16.0.201:2181,172.16.0.202:2181'
-      - 'MONGO_SERVER=mongodb://jwaoo_im:123456@s-j6cfc4998e52dd44.mongodb.rds.aliyuncs.com:3717,s-j6c1b81867724ca4.mongodb.rds.aliyuncs.com:3717/jwaoo_im'
-      - 'REDIS_SERVER=r-j6c1a2df0e7ab504.redis.rds.aliyuncs.com:6379'
-      - 'MqNameServer=172.16.0.200:9876;172.16.0.201:9876'
+      - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
+      - 'MONGO_SERVER=mongodb://root:Jwaoo2017$@s-j6c5a9ebedc8c514.mongodb.rds.aliyuncs.com:3717,s-j6c5b1c8e055f244.mongodb.rds.aliyuncs.com:3717/jwaoo_im'
+      - 'REDIS_SERVER=r-j6c4beue9ch6tkgf3r.redis.rds.aliyuncs.com:6379'
+      - 'MqNameServer=192.168.0.144:9876;192.168.0.145:9876'
       - 'ACCOUNT=http://172.16.0.202:8080'
       - 'PUSH=http://172.16.0.202:8091'
       - 'CLIENTID=5c63f0b2c74d673ea5700180'
+      - 'BILL_ENABLE=1'
       - 'IM_ROLE=SERVER'
     ulimits:
-      - 
-        name: nofile
-        softLimit: 5000
-        hardLimit: 6000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
   im_router:
     image: im_router
     hosts:
@@ -35,16 +32,14 @@ services:
     volume:
       - '/data/server/logs/im_router:/logs'
     environment:
-      - 'ZK_SERVER=172.16.0.200:2181,172.16.0.201:2181,172.16.0.202:2181'
-      - 'MONGO_SERVER=mongodb://jwaoo_im:123456@s-j6cfc4998e52dd44.mongodb.rds.aliyuncs.com:3717,s-j6c1b81867724ca4.mongodb.rds.aliyuncs.com:3717/jwaoo_im'
-      - 'REDIS_SERVER=r-j6c1a2df0e7ab504.redis.rds.aliyuncs.com:6379'
-      - 'MqNameServer=172.16.0.200:9876;172.16.0.201:9876'
+      - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
+      - 'MONGO_SERVER=mongodb://root:Jwaoo2017$@s-j6c5a9ebedc8c514.mongodb.rds.aliyuncs.com:3717,s-j6c5b1c8e055f244.mongodb.rds.aliyuncs.com:3717/jwaoo_im'
+      - 'REDIS_SERVER=r-j6c4beue9ch6tkgf3r.redis.rds.aliyuncs.com:6379'
+      - 'MqNameServer=192.168.0.144:9876;192.168.0.145:9876'
       - 'ACCOUNT=http://172.16.0.202:8080'
       - 'PUSH=http://172.16.0.202:8091'
       - 'CLIENTID=5c63f0b2c74d673ea5700180'
+      - 'BILL_ENABLE=1'
       - 'IM_ROLE=ROUTER'
     ulimits:
-      - 
-        name: nofile
-        softLimit: 5000
-        hardLimit: 6000
+      - {"name": "nofile","soft": 10000, "hard": 12000}

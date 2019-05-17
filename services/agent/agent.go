@@ -105,6 +105,33 @@ func processStartServer(server string, params serverParams, ctx *gin.Context) er
 	return nil
 }
 
+func httpStopHandler(ctx *gin.Context) {
+	server := ctx.Param("server")
+	params := serverParams{}
+	if ctx.BindJSON(&params) == nil {
+		if params.Credential != common.Credential {
+			httpResult := newResult(common.CredentialError)
+			ctx.JSON(http.StatusBadRequest, httpResult)
+			logger.Println("认证失败")
+			return
+		}
+	} else {
+		httpResult := newResult(common.ParamsNotValide)
+		ctx.JSON(http.StatusBadRequest, httpResult)
+		logger.Println("JSON bind失败")
+		return
+	}
+	err := StopContainerByName(server)
+	if err != nil {
+		httpResult := newResult(common.StopContainerError)
+		httpResult.Data = err.String()
+		ctx.JSON(http.StatusBadRequest, httpResult)
+	} else {
+		httpResult := newResult(common.Success)
+		ctx.JSON(http.StatusOK, httpResult)
+	}
+}
+
 func httpStartHandler(ctx *gin.Context) {
 	server := ctx.Param("server")
 	params := serverParams{}
@@ -268,6 +295,7 @@ func StartAgentServer(port int16) {
 	engine := gin.Default()
 	group := engine.Group("/api/v1")
 	group.POST("/start/:server", httpStartHandler)
+	group.POST("/stop/:server", httpStopHandler)
 	group.GET("/status/:server", httpStatusHandler)
 	group.GET("/status", httpAgentStatus)
 	sport := fmt.Sprintf(":%d", port)

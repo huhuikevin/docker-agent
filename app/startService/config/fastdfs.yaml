@@ -6,8 +6,6 @@ services:
     container: fdfs-tracker
     hosts:
       - 192.168.0.140
-      - 192.168.0.142
-      - 192.168.0.143
     network: host
     volumes:
       - '/data/server/fastdfs:/data'
@@ -18,7 +16,6 @@ services:
     image: fastdfs:v2
     container: fdfs-storage
     hosts:
-      - 192.168.0.140
       - 192.168.0.142
       - 192.168.0.143
     network: host
@@ -26,7 +23,7 @@ services:
       - '/data/server/fastdfs:/data'
     command: [/start.sh, storage]
     environment:
-      - 'TRACKER_SERVER=192.168.0.140:22122,192.168.0.142:22122,192.168.0.143:22122'
+      - 'TRACKER_SERVER=192.168.0.140:22122'
       - 'GROUP_NAME=group1'
       - 'BIND_ADDR=$HOST_IP'
       - 'WEB_PORT=8000'

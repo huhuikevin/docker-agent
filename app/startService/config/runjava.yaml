@@ -14,10 +14,7 @@ services:
       code: 200
       timeout: 60
     ulimits:
-      - 
-        name: nofile
-        soft: 10000
-        hard: 12000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook
   community:
     image: community
@@ -33,10 +30,7 @@ services:
       code: 200
       timeout: 60
     ulimits:
-      - 
-        name: nofile
-        soft: 10000
-        hard: 12000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook
   order:
     image: order
@@ -52,10 +46,7 @@ services:
       code: 200
       timeout: 60
     ulimits:
-      - 
-        name: nofile
-        soft: 10000
-        hard: 12000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook
   payment:
     image: payment
@@ -71,10 +62,7 @@ services:
       code: 200
       timeout: 60
     ulimits:
-      - 
-        name: nofile
-        soft: 10000
-        hard: 12000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook
   srv-route:
     image: srv-route
@@ -85,13 +73,10 @@ services:
       - /data/server/logs:/data/logs
     checkHealth:
       path: /srv/health
-      code: 200
+      code: 404
       timeout: 60
     ulimits:
-      - 
-        name: nofile
-        soft: 10000
-        hard: 12000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     java_opts: JAVA_OPTS=-Xms512m -Xmx512m
   logs-downtank:
     image: logs-downtank
@@ -105,10 +90,7 @@ services:
       code: 200
       timeout: 60
     ulimits:
-      - 
-        name: nofile
-        soft: 10000
-        hard: 12000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     java_opts: JAVA_OPTS=-Xms512m
   common-files:
     image: common-files
@@ -119,13 +101,10 @@ services:
       - /data/server/logs:/data/logs
     checkHealth:
       path: /common/health
-      code: 200
+      code: 404
       timeout: 60
     ulimits:
-      - 
-        name: nofile
-        soft: 10000
-        hard: 12000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     java_opts: JAVA_OPTS=-Xms512m -Xmx512m
   console:
     image: console
@@ -139,10 +118,7 @@ services:
       code: 200
       timeout: 60
     ulimits:
-      - 
-        name: nofile
-        soft: 10000
-        hard: 12000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     java_opts: JAVA_OPTS=-Xms512m -Xmx512m
   activity:
     image: activity
@@ -156,10 +132,7 @@ services:
       code: 200
       timeout: 60
     ulimits:
-      - 
-        name: nofile
-        soft: 10000
-        hard: 12000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook=true
   agent:
     image: agent
@@ -173,10 +146,7 @@ services:
       code: 200
       timeout: 60
     ulimits:
-      - 
-        name: nofile
-        soft: 10000
-        hard: 12000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook=true
   comm-msg:
     image: comm-msg
@@ -187,13 +157,10 @@ services:
       - /data/server/logs:/data/logs
     checkHealth:
       path: /comm-msg/health
-      code: 200
+      code: 404
       timeout: 60
     ulimits:
-      - 
-        name: nofile
-        soft: 10000
-        hard: 12000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Xbootclasspath/p:/extdata/alpn-boot-8.1.11.v20170118.jar
   openapi:
     image: openapi
@@ -207,8 +174,5 @@ services:
       code: 200
       timeout: 60
     ulimits:
-      - 
-        name: nofile
-        soft: 10000
-        hard: 12000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     java_opts: JAVA_OPTS=-Xms512m -Xmx512m

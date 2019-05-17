@@ -1,0 +1,40 @@
+docker_agent: http://47.75.144.156:2000
+services:
+  logstash_jdbc:
+    image: logstash:6.1.0
+    container: logstash_jdbc
+    hosts:
+      - 192.168.0.140
+    network: host
+    volumes:
+      - '/data/server/logstash_jdbc:/data/logstash'
+    environment:
+      - 'LS_JAVA_OPTS=-Xms1025m -Xmx1024m'
+      - 'MYSQL_URL='
+      - 'MYSQL_USER='
+      - 'MYSQL_PASSWD='
+      - 'LOGSTASH_DATA='
+      - 'KAFKA_URL='
+      - 'MONGO_URL='
+      - 'ES_URL='
+      - 'SeverTimeZone='
+      - 'JDBC_TIMEZONE='
+    command: [/start.sh]
+    ulimits:
+      - {"name": "nofile","soft": 10000, "hard": 12000}
+  logstash_beat:
+    image: logstash:5.4.0
+    container: logstash_beat
+    hosts:
+      - 192.168.0.142
+    network: host
+    volumes:
+      - '/data/server/logstash_beat:/data/logstash'
+    command: [/start.sh]
+    environment:
+      - 'LS_JAVA_OPTS=-Xms1025m -Xmx1024m'
+      - 'ES_HOSTS='
+      - 'KFK_HOSTS='
+    ulimits:
+      - {"name": "nofile","soft": 10000, "hard": 12000}
+

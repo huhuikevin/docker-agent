@@ -27,6 +27,7 @@ type Agent struct {
 const (
 	startPath  = "/api/v1/start/"
 	statusPath = "/api/v1/status/"
+	stopPath   = "/api/v1/stop/"
 )
 
 var agents = make(map[HostAddr]*Agent, 0)
@@ -195,6 +196,14 @@ func (agent *Agent) StartServiceByName(name string, params *common.ServerParams)
 		return agent.newResult(common.NotAllowedRuningOnHost)
 	}
 	agentURL := "http://" + agent.Host.String() + startPath + name
+	result := common.DoHTTPPostJSON(agentURL, params)
+	result.Host = agent.Host.IP()
+	return result
+}
+
+//StopServiceByName stop the service
+func (agent *Agent) StopServiceByName(name string, params *common.ServerParams) *common.RequstResult {
+	agentURL := "http://" + agent.Host.String() + stopPath + name
 	result := common.DoHTTPPostJSON(agentURL, params)
 	result.Host = agent.Host.IP()
 	return result
