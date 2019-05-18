@@ -2,13 +2,13 @@
 
 #放到云主机的clould-init 脚本中运行
 #这台host上需要运行哪些服务
-runningsrv="comm-msg"
+runningsrv="collider"
 #proxy 代理地址，agent启动的时候需要注册到proxy
 proxyserver="http://192.168.0.141:2000"
 #docker registry 地址
 registry="registry-vpc.cn-hongkong.aliyuncs.com"
 #docker agent的镜像名称
-image="$registry/lovanow_beta/agent:v1"
+image="$registry/lovanow_beta/docker-agent:v1"
 #用户名密码
 username="sensenow"
 password="jwaoo2017$"
@@ -20,13 +20,13 @@ ext_port=2000
 
 mkdir -p /etc/jwaoo
 
-script=/data/server/agent/start.sh
+script=/data/server/docker-agent/start.sh
 #script=start.sh
-config=/etc/jwaoo/agent.yaml
+config=/etc/jwaoo/docker-agent.yaml
 #config=config111.yaml
 systempath=/lib/systemd/system
 #systempath=./
-service=agent.service
+service=docker-agent.service
 servicefile=$systempath/$service
 networkdev=eth0
 ip=`/sbin/ifconfig $networkdev|grep inet|grep -v inet6|awk '{print $2}'|tr -d "addr:"`
@@ -72,14 +72,14 @@ create_service()
 
 create_script()
 {
-	mkdir -p /data/server/agent
+	mkdir -p /data/server/docker-agent
 	echo "#!/bin/sh" > $script
 
 	echo "mode=\$1" >> $script
 
 	echo "registry=$registry" >> $script
 	echo "image=$image" >> $script
-	echo "docker_name=agent" >> $script
+	echo "docker_name=docker-agent" >> $script
 
 	echo "kill_docker()" >> $script
 	echo "{" >> $script
@@ -98,7 +98,7 @@ create_script()
 	echo "{" >> $script
     echo "	docker login -u \"$username\" -p \"$password\" $registry" >> $script
     echo "	docker pull \$image" >> $script
-    echo "	docker run -d --rm --name \$docker_name --net=bridge -v $config:$config -v /data/server/agent/logs:/logs -v /var/run/docker.sock:/var/run/docker.sock --env APP=agent --env APP_PORT=$ext_port --env HOST_IP=$ip -p $ext_port:$port \$image" >> $script
+    echo "	docker run -d --rm --name \$docker_name --net=bridge -v $config:$config -v /data/server/docker-agent/logs:/logs -v /var/run/docker.sock:/var/run/docker.sock --env APP=agent --env APP_PORT=$ext_port --env HOST_IP=$ip -p $ext_port:$port \$image" >> $script
 	echo "}" >> $script
 
 	echo "kill_docker" >> $script

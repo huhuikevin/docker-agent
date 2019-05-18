@@ -121,10 +121,10 @@ func httpStopHandler(ctx *gin.Context) {
 		logger.Println("JSON bind失败")
 		return
 	}
-	err := StopContainerByName(server)
+	err := uitls.StopContainerByName(server)
 	if err != nil {
 		httpResult := newResult(common.StopContainerError)
-		httpResult.Data = err.String()
+		httpResult.Data = err.Error()
 		ctx.JSON(http.StatusBadRequest, httpResult)
 	} else {
 		httpResult := newResult(common.Success)

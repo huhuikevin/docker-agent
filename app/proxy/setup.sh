@@ -7,20 +7,20 @@ registry="registry-vpc.cn-hongkong.aliyuncs.com"
 username="sensenow"
 password="jwaoo2017$"
 #proxy docker 镜像地址
-image="$registry/lovanow_beta/proxy:v1"
+image="$registry/lovanow_beta/docker-proxy:v1"
 #proxy 监听端口
 port=8080
 #proxy 对外暴露的接口，客户端和agent通过这个端口连接
 ext_port=2000
 
 mkdir -p /etc/jwaoo
-script=/data/server/proxy/start.sh
-config=/etc/jwaoo/proxy.yaml
+script=/data/server/docker-proxy/start.sh
+config=/etc/jwaoo/docker-proxy.yaml
 systempath=/lib/systemd/system
 #config=config111.yaml
 #script=start.sh
 #systempath=./
-service=proxy.service
+service=docker-proxy.service
 servicefile=$systempath/$service
 
 
@@ -60,14 +60,14 @@ create_service()
 
 create_script()
 {
-	mkdir -p /data/server/proxy
+	mkdir -p /data/server/docker-proxy
 	echo "#!/bin/sh" > $script
 
 	echo "mode=\$1" >> $script
 
 	echo "registry=$registry" >> $script
 	echo "image=$image" >> $script
-	echo "docker_name=proxy" >> $script
+	echo "docker_name=docker-proxy" >> $script
 
 	echo "kill_docker()" >> $script
 	echo "{" >> $script
@@ -86,7 +86,7 @@ create_script()
 	echo "{" >> $script
     echo "	docker login -u \"$username\" -p \"$password\" $registry" >> $script
     echo "	docker pull \$image" >> $script
-    echo "	docker run -d --rm --name \$docker_name --net=bridge --env APP=proxy -v $config:$config -v /data/server/proxy/logs:/logs -p $ext_port:$port \$image" >> $script
+    echo "	docker run -d --rm --name \$docker_name --net=bridge --env APP=proxy -v $config:$config -v /data/server/docker-proxy/logs:/logs -p $ext_port:$port \$image" >> $script
 	echo "}" >> $script
 
 	echo "kill_docker" >> $script

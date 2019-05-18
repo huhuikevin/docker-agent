@@ -45,6 +45,7 @@ if [ "$app"x == "proxy"x -o "$app"x == "agent"x ];then
 	createDockerfile
 
 	image=`echo $app | tr 'A-Z' 'a-z'`
+        image=docker-$image
 	echo $image
 	docker build -t $image:v1 .
 	cd -

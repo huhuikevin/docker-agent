@@ -9,7 +9,7 @@ import (
 
 func main() {
 	fmt.Println("StartAgentServer")
-	config := flag.String("config", "/etc/jwaoo/agent.yaml", "config file")
+	config := flag.String("config", "/etc/jwaoo/docker-agent.yaml", "config file")
 	flag.Parse()
 	agent.StartAgentWithConfigFile(*config)
 }
