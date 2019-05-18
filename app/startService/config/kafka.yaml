@@ -6,9 +6,7 @@ services:
     container: kafka-2.11-1.1.0
     hosts:
       - 172.16.0.209
-    ports:
-      - '9092:9092'
-    network: bridge
+    network: host
     volumes:
       - '/data/server/kafka/data:/data'
       - '/data/server/kafka/logs:/logs'

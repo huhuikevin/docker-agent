@@ -1,40 +1,29 @@
-repository: registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta
-docker_agent: http://47.75.72.87:7000
+docker_agent: http://47.75.144.156:2000
 services:
   apprtc:
     image: apprtc
-    hosts:
-      - 172.16.0.210
     ports:
       - '8080:9080'
     network: bridge
     volumes:
       - '/data/server/logs/apprtc:/logs'
     environment:
-      - 'ZK_SERVER=172.16.0.200:2181,172.16.0.201:2181,172.16.0.202:2181'
+      - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
       - EXT_PUB_IP=beta3.sensenow.com
-      - COLLIDER_HOST=47.75.72.87
-      - COLLIDER_PORT=9081
+      - COLLIDER_HOST=beta3.sensenow.com
+      - COLLIDER_PORT=80
     ulimits:
-      - 
-        name: nofile
-        softLimit: 5000
-        hardLimit: 6000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
   collider:
     image: collider
-    hosts:
-      - 172.16.0.202
     ports:
       - '8080:9081'
     network: bridge
     volumes:
       - '/data/server/logs/collider:/logs'
     environment:
-      - 'ZK_SERVER=172.16.0.200:2181,172.16.0.201:2181,172.16.0.202:2181'
-      - COLLIDER_HOST=47.75.72.87
-      - COLLIDER_PORT=9081
+      - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
+      - COLLIDER_HOST=beta3.sensenow.com
+      - COLLIDER_PORT=80
     ulimits:
-      - 
-        name: nofile
-        softLimit: 5000
-        hardLimit: 6000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
