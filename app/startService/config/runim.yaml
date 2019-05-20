@@ -1,9 +1,7 @@
-docker_agent: http://47.75.72.87:7000
+docker_agent: http://47.75.144.156:2000
 services:
   im_server:
     image: im_server
-    hosts:
-      - 172.16.0.210
     ports:
       - '8080:9087'
       - '8090:9088'
@@ -15,8 +13,8 @@ services:
       - 'MONGO_SERVER=mongodb://root:Jwaoo2017$@s-j6c5a9ebedc8c514.mongodb.rds.aliyuncs.com:3717,s-j6c5b1c8e055f244.mongodb.rds.aliyuncs.com:3717/jwaoo_im'
       - 'REDIS_SERVER=r-j6c4beue9ch6tkgf3r.redis.rds.aliyuncs.com:6379'
       - 'MqNameServer=192.168.0.144:9876;192.168.0.145:9876'
-      - 'ACCOUNT=http://172.16.0.202:8080'
-      - 'PUSH=http://172.16.0.202:8091'
+      - 'ACCOUNT=http://192.168.0.152'
+      - 'PUSH=http://192.168.0.152'
       - 'CLIENTID=5c63f0b2c74d673ea5700180'
       - 'BILL_ENABLE=1'
       - 'IM_ROLE=SERVER'
@@ -24,20 +22,18 @@ services:
       - {"name": "nofile","soft": 10000, "hard": 12000}
   im_router:
     image: im_router
-    hosts:
-      - 172.16.0.210
     ports:
       - '8080:9086'
     network: bridge
-    volume:
+    volumes:
       - '/data/server/logs/im_router:/logs'
     environment:
       - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
       - 'MONGO_SERVER=mongodb://root:Jwaoo2017$@s-j6c5a9ebedc8c514.mongodb.rds.aliyuncs.com:3717,s-j6c5b1c8e055f244.mongodb.rds.aliyuncs.com:3717/jwaoo_im'
       - 'REDIS_SERVER=r-j6c4beue9ch6tkgf3r.redis.rds.aliyuncs.com:6379'
       - 'MqNameServer=192.168.0.144:9876;192.168.0.145:9876'
-      - 'ACCOUNT=http://172.16.0.202:8080'
-      - 'PUSH=http://172.16.0.202:8091'
+      - 'ACCOUNT=http://192.168.0.152'
+      - 'PUSH=http://192.168.0.152'
       - 'CLIENTID=5c63f0b2c74d673ea5700180'
       - 'BILL_ENABLE=1'
       - 'IM_ROLE=ROUTER'

@@ -2,7 +2,7 @@
 
 #放到云主机的clould-init 脚本中运行
 #这台host上需要运行哪些服务
-runningsrv="collider"
+runningsrv="im_server, im_router"
 #proxy 代理地址，agent启动的时候需要注册到proxy
 proxyserver="http://192.168.0.141:2000"
 #docker registry 地址
