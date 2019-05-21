@@ -1,40 +1,27 @@
-repository: registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta
-docker_agent: http://47.75.72.87:7000
+docker_agent: http://47.75.144.156:2000
 services:
   filebeat_logdown:
-    image: filebeat:v4
+    image: filebeat_logstash:5.4.3-20190520
     container: filebeat-logdown
-    hosts:
-      - 172.16.0.207
-    network: host
+    network: bridge
     volumes:
-      - '/data/server/filebeat:/data'
+      - '/data/server/filebeat_downtrank/data:/data'
+      - '/data/server/filebeat_downtrank/logs:/logs'
       - '/data/server/logs/logs-downtank:/applogs'
     environment:
-      - 'LSHOSTS=172.16.0.209:5044'
+      - 'LOGSTASH_HOSTS=192.168.0.155:5044'
     ulimits:
-      - 
-        name: nofile
-        softLimit: 5000
-        hardLimit: 6000
+      - {"name": "nofile","soft": 10000, "hard": 12000}
   filebeat-kfk: 
-    image: filebeat-kfk-alpine:6.4.3
+    image: filebeat_kafka:5.4.3-20190520
     container: filebeat-kfk
-    hosts:
-      - 172.16.0.207
-      - 172.16.0.210
-      - 172.16.0.211
-    network: host
-    volume:
-      - '/data/server/filebeat-kfk:/filebeat'
-      - '/data/server/logs:/applogs'
+    network: bridge
+    volumes:
+      - '/data/server/filebeat_kfk/data:/data'
+      - '/data/server/filebeat_kfk/logs:/logs'
+      - '/data/server/logs/oauth:/applogs'
     environment:
-      - 'monitor_path=/applogs/*/*.log'
-      - 'kafaka_host=172.16.0.209:9092'
-      - 'kafaka_topic=beatlovanowlog_$HOSTNAME'
-      - 'beatdata_path=/filebeat'
+      - 'KAFKA_HOSTS=192.168.0.154:9092'
+      - 'KAFKA_TOPIC=nowslv'
     ulimits:
-      - 
-        name: nofile
-        softLimit: 5000
-        hardLimit: 6000
+      - {"name": "nofile","soft": 10000, "hard": 12000}

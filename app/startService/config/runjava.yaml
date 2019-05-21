@@ -15,7 +15,7 @@ services:
       timeout: 60
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
-    java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook
+    java_opts: JAVA_OPTS=-Xms768m -Xmx768m -Ddubbo.shutdown.hook
   community:
     image: community
     ports:
@@ -31,7 +31,7 @@ services:
       timeout: 60
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
-    java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Ddubbo.shutdown.hook
+    java_opts: JAVA_OPTS=-Xms768m -Xmx768m -Ddubbo.shutdown.hook
   order:
     image: order
     ports:

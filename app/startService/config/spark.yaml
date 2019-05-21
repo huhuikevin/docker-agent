@@ -6,7 +6,7 @@ services:
     container: spark
     network: host
     volumes:
-      - /data/server/spark/logs:/usr/bin/spark/logs
+      - /data/server/spark:/usr/bin/spark
     ulimits:
       - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
     environment: 

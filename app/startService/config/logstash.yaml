@@ -1,40 +1,40 @@
 docker_agent: http://47.75.144.156:2000
 services:
   logstash_jdbc:
-    image: logstash:6.1.0
+    image: logstash:6.3.1-jdbc
     container: logstash_jdbc
-    hosts:
-      - 192.168.0.140
     network: host
     volumes:
-      - '/data/server/logstash_jdbc:/data/logstash'
+      - '/data/server/logstash_jdbc/data:/data'
+      - '/data/server/logstash_jdbc/logs:/logs'
     environment:
-      - 'LS_JAVA_OPTS=-Xms1025m -Xmx1024m'
-      - 'MYSQL_URL='
-      - 'MYSQL_USER='
-      - 'MYSQL_PASSWD='
-      - 'LOGSTASH_DATA='
-      - 'KAFKA_URL='
-      - 'MONGO_URL='
-      - 'ES_URL='
-      - 'SeverTimeZone='
-      - 'JDBC_TIMEZONE='
+      - 'LS_JAVA_OPTS=-Xms768m -Xmx768m'
+      - 'MYSQL_URL=rm-j6cv1zc59sb1z11p9.mysql.rds.aliyuncs.com'
+      - 'MYSQL_USER=spark'
+      - 'MYSQL_PASSWD=123456'
+      - 'LOGSTASH_DATA=/data'
+      - 'KAFKA_URL=192.168.0.154:9092'
+      - 'MONGO_URL=spark:123456@s-j6c5a9ebedc8c514.mongodb.rds.aliyuncs.com:3717,s-j6c5b1c8e055f244.mongodb.rds.aliyuncs.com:3717'
+      - 'ES_URL=http://192.168.0.154:9200'
+      - 'SeverTimeZone=UTC'
+      - 'JDBC_TIMEZONE=UTC'
     command: [/start.sh]
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
   logstash_beat:
-    image: logstash:5.4.0
-    container: logstash_beat
-    hosts:
-      - 192.168.0.142
-    network: host
+    image: logstash:5.4.0-logj4
+    container: logstash_log4j
+    network: bridge
+    ports:
+      - '5044:5044'
     volumes:
-      - '/data/server/logstash_beat:/data/logstash'
+      - '/data/server/logstash_beat/data:/data'
+      - '/data/server/logstash_beat/logs:/logs'
     command: [/start.sh]
     environment:
-      - 'LS_JAVA_OPTS=-Xms1025m -Xmx1024m'
-      - 'ES_HOSTS='
-      - 'KFK_HOSTS='
+      - 'LS_JAVA_OPTS=-Xms768m -Xmx768m'
+      - 'ES_HOSTS=http://192.168.0.154:9200'
+      - 'KAFKA_HOSTS=192.168.0.154:9092'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
 

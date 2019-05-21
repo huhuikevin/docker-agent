@@ -1,20 +1,17 @@
-repository: registry-vpc.cn-hongkong.aliyuncs.com/lovanow_beta
-docker_agent: http://47.75.72.87:7000
+docker_agent: http://47.75.144.156:2000
 services:
   elasticsearch:
     image: elasticsearch:5.4.3-ali
     container: elasticsearch
-    hosts:
-      - 172.16.0.209
-    network: host
+    network: bridge
+    ports:
+      - '9200:9200'
+      - '9300:9300'
     volumes:
       - '/data/server/elasticsearch/data:/usr/share/elasticsearch/data'
       - '/data/server/elasticsearch/logs:/usr/share/elasticsearch/logs'
       - '/data/server/elasticsearch/backup:/usr/share/elasticsearch/backup'
     ulimits:
-      - 
-        name: nofile
-        softLimit: 5000
-        hardLimit: 6000
+      - {"name": "nofile","soft": 10000, "hard": 70000}
     environment:
-      - 'ES_JAVA_OPTS="-Xms512m -Xmx512m"'
+      - 'ES_JAVA_OPTS=-Xms2g -Xmx2g'
