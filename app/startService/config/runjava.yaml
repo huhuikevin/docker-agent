@@ -115,7 +115,7 @@ services:
       - /data/server/logs:/data/logs
     checkHealth:
       path: /console/health
-      code: 200
+      code: 404
       timeout: 60
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}

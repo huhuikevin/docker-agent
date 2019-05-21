@@ -1,0 +1,26 @@
+docker_agent: http://47.75.144.156:2000
+services:
+  facerpcsrv:
+    image: facerpcsrv
+    ports:
+      - '9000:9084'
+    network: bridge
+    volumes:
+      - '/data/server/face/model:/model'
+      - '/data/server/face/facerpcsrv:/logs'
+    environment:
+      - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
+      - 'domainMap=storage1.sensenow.com:lovabeta.oss-cn-hongkong-internal.aliyuncs.com'
+    ulimits:
+      - {"name": "nofile","soft": 10000, "hard": 12000}
+  recmdrpcsvr:
+    image: recmdrpcsvr
+    ports:
+      - '9000:9085'
+    network: bridge
+    volumes:
+      - '/data/server/logs/recmdrpcsvr:/logs'
+    environment:
+      - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
+    ulimits:
+      - {"name": "nofile","soft": 10000, "hard": 12000}
