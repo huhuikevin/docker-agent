@@ -1,4 +1,4 @@
-docker_agent: http://47.75.144.156:2000
+docker_agent: http://47.244.185.243:2001
 services:
   serverproxy:
     image: serverproxy
@@ -14,7 +14,7 @@ services:
     ports:
       - '80:8098'
     network: bridge
-    volume:
+    volumes:
       - '/data/server/logs/lovara:/data/logs'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
@@ -23,7 +23,7 @@ services:
     ports:
       - '80:8099'
     network: bridge
-    volume:
+    volumes:
       - '/data/server/logs/sensenow:/data/logs'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
@@ -32,7 +32,7 @@ services:
     ports:
       - '80:8100'
     network: bridge
-    volume:
+    volumes:
       - '/data/server/logs/share:/data/logs'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
@@ -41,7 +41,7 @@ services:
     ports:
       - '80:8101'
     network: bridge
-    volume:
+    volumes:
       - '/data/server/logs/apph5:/data/logs'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}

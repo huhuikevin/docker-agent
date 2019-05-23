@@ -1,4 +1,4 @@
-docker_agent: http://47.75.144.156:2000
+docker_agent: http://47.244.185.243:2001
 services:
   apprtc:
     image: apprtc
@@ -9,9 +9,10 @@ services:
       - '/data/server/logs/apprtc:/logs'
     environment:
       - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
-      - EXT_PUB_IP=beta3.sensenow.com
-      - COLLIDER_HOST=beta3.sensenow.com
-      - COLLIDER_PORT=80
+      - 'EXT_PUB_IP=beta3.sensenow.com'
+      - 'RTC_TLS=true'
+      - 'COLLIDER_HOST=beta3.sensenow.com'
+      - 'COLLIDER_PORT=80'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
   collider:
@@ -23,7 +24,7 @@ services:
       - '/data/server/logs/collider:/logs'
     environment:
       - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
-      - COLLIDER_HOST=beta3.sensenow.com
-      - COLLIDER_PORT=80
+      - 'COLLIDER_HOST=beta3.sensenow.com'
+      - 'COLLIDER_PORT=80'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}

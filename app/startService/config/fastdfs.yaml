@@ -1,4 +1,4 @@
-docker_agent: http://47.75.144.156:2000
+docker_agent: http://47.244.185.243:2001
 compose_server: fastdfs
 services:
   fdfs_tracker:

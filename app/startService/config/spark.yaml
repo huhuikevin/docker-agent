@@ -1,4 +1,4 @@
-docker_agent: http://192.168.10.250:2000
+docker_agent: http://47.244.185.243:2001
 compose_server: zk
 services:
   spark:
@@ -6,9 +6,11 @@ services:
     container: spark
     network: host
     volumes:
-      - /data/server/spark:/usr/bin/spark
+      - /data/server/spark/logs:/usr/bin/spark/logs
+      - /data/server/spark/recmd:/var/log/charles/recmd
     ulimits:
-      - {"name": "nofile","softLimit": 10000, "hardLimit": 12000}
+      - {"name": "nofile","soft": 10000, "hard": 12000}
     environment: 
       - mode=all
-      - MEMORY_SIZE=4g
+      - MEMORY_SIZE=3g
+      - DRIVER_MEM=1g
