@@ -5,6 +5,7 @@ services:
     ports:
       - '8080:9087'
       - '8090:9088'
+      - '8091:10080'
     network: bridge
     volumes:
       - '/data/server/logs/im_server:/logs'
@@ -24,6 +25,7 @@ services:
     image: im_router
     ports:
       - '8080:9086'
+      - '8091:10081'
     network: bridge
     volumes:
       - '/data/server/logs/im_router:/logs'

@@ -239,11 +239,18 @@ func buildEnv(config ServerConfig, host string) []string {
 		penv = fmt.Sprintf("PORT_%d=%d", string2int(parts[0]), string2int(parts[1]))
 		env = append(env, penv)
 
-		if len(config.PortMap) == 2 {
+		if len(config.PortMap) > 1 {
 			parts := strings.Split(config.PortMap[1], ":")
 			penv := fmt.Sprintf("APP_PORT2=%d", string2int(parts[0]))
 			env = append(env, penv)
 			penv = fmt.Sprintf("HOST_PORT2=%d", string2int(parts[1]))
+			env = append(env, penv)
+		}
+		if len(config.PortMap) > 2 {
+			parts := strings.Split(config.PortMap[2], ":")
+			penv := fmt.Sprintf("APP_PORT3=%d", string2int(parts[0]))
+			env = append(env, penv)
+			penv = fmt.Sprintf("HOST_PORT3=%d", string2int(parts[1]))
 			env = append(env, penv)
 		}
 	}
