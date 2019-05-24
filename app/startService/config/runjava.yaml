@@ -161,7 +161,7 @@ services:
       timeout: 60
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
-    java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Xbootclasspath/p:/extdata/alpn-boot-8.1.11.v20170118.jar
+    java_opts: JAVA_OPTS=-Xms512m -Xmx512m -Xbootclasspath/p:/extdata/alpn-boot-8.1.13.v20181017.jar
   openapi:
     image: openapi
     ports:
