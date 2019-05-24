@@ -23,8 +23,12 @@ services:
     ports:
       - '80:8099'
     network: bridge
+    command: [/start.sh]
     volumes:
       - '/data/server/logs/sensenow:/data/logs'
+    #environment:
+    #  - 'SENSE_KEY_OLD=qazplm2018082911'
+    #  - 'SENSE_KEY_NEW=0x37\&ls@|Jsls\^nG'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
   share:
