@@ -119,7 +119,7 @@ func postCheckhealCmdToAgend(server string, params *common.ServerParams) []*comm
 		return messages
 	}
 	agents := GetAgentsByServerName(server)
-	if agents == nil {
+	if agents == nil || len(agents) == 0 {
 		errResult := common.NewResult(common.CannotFoundAvalibleHost)
 		messages = append(messages, errResult)
 		return messages
@@ -134,7 +134,7 @@ func postCheckhealCmdToAgend(server string, params *common.ServerParams) []*comm
 func postGetStatusCmdToAgend(server string) []*common.RequstResult {
 	messages := make([]*common.RequstResult, 0)
 	agents := GetAgentsByServerName(server)
-	if agents == nil {
+	if agents == nil || len(agents) == 0 {
 		errResult := common.NewResult(common.CannotFoundAvalibleHost)
 		messages = append(messages, errResult)
 		return messages
