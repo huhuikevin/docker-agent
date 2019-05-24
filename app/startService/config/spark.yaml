@@ -14,3 +14,4 @@ services:
       - mode=all
       - MEMORY_SIZE=3g
       - DRIVER_MEM=1g
+      - CPU_CORES=1
