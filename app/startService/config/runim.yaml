@@ -1,4 +1,13 @@
 docker_agent: http://47.244.185.243:2001
+#define the server address
+zkserver: &zkserver 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
+mongo: &mongo 'MONGO_SERVER=mongodb://root:Jwaoo2017$@s-j6c5a9ebedc8c514.mongodb.rds.aliyuncs.com:3717,s-j6c5b1c8e055f244.mongodb.rds.aliyuncs.com:3717/admin'
+redis: &redis 'REDIS_SERVER=r-j6c4beue9ch6tkgf3r.redis.rds.aliyuncs.com:6379'
+mqserver: &mqserver 'MqNameServer=192.168.0.144:9876;192.168.0.145:9876'
+account: &account 'ACCOUNT=http://192.168.0.152'
+push: &push 'PUSH=http://192.168.0.152'
+clientid: &clientid 'CLIENTID=5c63f0b2c74d673ea5700180'
+billenable: &billenable 'BILL_ENABLE=1'
 services:
   im_server:
     image: im_server
@@ -10,14 +19,14 @@ services:
     volumes:
       - '/data/server/logs/im_server:/logs'
     environment:
-      - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
-      - 'MONGO_SERVER=mongodb://root:Jwaoo2017$@s-j6c5a9ebedc8c514.mongodb.rds.aliyuncs.com:3717,s-j6c5b1c8e055f244.mongodb.rds.aliyuncs.com:3717/admin'
-      - 'REDIS_SERVER=r-j6c4beue9ch6tkgf3r.redis.rds.aliyuncs.com:6379'
-      - 'MqNameServer=192.168.0.144:9876;192.168.0.145:9876'
-      - 'ACCOUNT=http://192.168.0.152'
-      - 'PUSH=http://192.168.0.152'
-      - 'CLIENTID=5c63f0b2c74d673ea5700180'
-      - 'BILL_ENABLE=1'
+      - *zkserver
+      - *mongo
+      - *redis
+      - *mqserver
+      - *account
+      - *push
+      - *clientid
+      - *billenable
       - 'IM_ROLE=SERVER'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
@@ -30,14 +39,14 @@ services:
     volumes:
       - '/data/server/logs/im_router:/logs'
     environment:
-      - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
-      - 'MONGO_SERVER=mongodb://root:Jwaoo2017$@s-j6c5a9ebedc8c514.mongodb.rds.aliyuncs.com:3717,s-j6c5b1c8e055f244.mongodb.rds.aliyuncs.com:3717/admin'
-      - 'REDIS_SERVER=r-j6c4beue9ch6tkgf3r.redis.rds.aliyuncs.com:6379'
-      - 'MqNameServer=192.168.0.144:9876;192.168.0.145:9876'
-      - 'ACCOUNT=http://192.168.0.152'
-      - 'PUSH=http://192.168.0.152'
-      - 'CLIENTID=5c63f0b2c74d673ea5700180'
-      - 'BILL_ENABLE=1'
+      - *zkserver
+      - *mongo
+      - *redis
+      - *mqserver
+      - *account
+      - *push
+      - *clientid
+      - *billenable
       - 'IM_ROLE=ROUTER'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}

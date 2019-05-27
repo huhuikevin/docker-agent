@@ -1,4 +1,8 @@
 docker_agent: http://47.244.185.243:2001
+zk_server: &zk_server
+  - zkserver1:192.168.0.140
+  - zkserver2:192.168.0.142
+  - zkserver3:192.168.0.143
 services:
   oauth:
     image: oauth
@@ -9,6 +13,7 @@ services:
     network: bridge
     volumes:
       - /data/server/logs:/data/logs
+    extra_hosts: *zk_server
     checkHealth:
       path: /oauth/health
       code: 200
@@ -25,6 +30,7 @@ services:
     network: bridge
     volumes:
       - /data/server/logs:/data/logs
+    extra_hosts: *zk_server
     checkHealth:
       path: /community/health
       code: 200
@@ -41,6 +47,7 @@ services:
     network: bridge
     volumes:
       - /data/server/logs:/data/logs
+    extra_hosts: *zk_server
     checkHealth:
       path: /order/health
       code: 200
@@ -57,6 +64,7 @@ services:
     network: bridge
     volumes:
       - /data/server/logs:/data/logs
+    extra_hosts: *zk_server
     checkHealth:
       path: /payment/health
       code: 200
@@ -71,6 +79,7 @@ services:
     network: bridge
     volumes:
       - /data/server/logs:/data/logs
+    extra_hosts: *zk_server
     checkHealth:
       path: /srv/health
       code: 404
@@ -85,6 +94,7 @@ services:
     network: bridge
     volumes:
       - /data/server/logs:/data/logs
+    extra_hosts: *zk_server
     checkHealth:
       path: /logs-downtank/health
       code: 200
@@ -99,6 +109,7 @@ services:
     network: bridge
     volumes:
       - /data/server/logs:/data/logs
+    extra_hosts: *zk_server
     checkHealth:
       path: /common/health
       code: 404
@@ -113,6 +124,7 @@ services:
     network: bridge
     volumes:
       - /data/server/logs:/data/logs
+    extra_hosts: *zk_server
     checkHealth:
       path: /console/health
       code: 404
@@ -127,6 +139,7 @@ services:
     network: bridge
     volumes:
       - /data/server/logs:/data/logs
+    extra_hosts: *zk_server
     checkHealth:
       path: /activity/health
       code: 200
@@ -141,6 +154,7 @@ services:
     network: bridge
     volumes:
       - /data/server/logs:/data/logs
+    extra_hosts: *zk_server
     checkHealth:
       path: /agent/health
       code: 200
@@ -155,6 +169,7 @@ services:
     network: bridge
     volumes:
       - /data/server/logs:/data/logs
+    extra_hosts: *zk_server
     checkHealth:
       path: /comm-msg/health
       code: 404
@@ -169,6 +184,7 @@ services:
     network: bridge
     volumes:
       - /data/server/logs:/data/logs
+    extra_hosts: *zk_server
     checkHealth:
       path: /openapi/health
       code: 200

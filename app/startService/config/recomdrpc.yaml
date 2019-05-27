@@ -1,4 +1,10 @@
 docker_agent: http://47.244.185.243:2001
+zkserver: &zkserver 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
+sparkmaster: &sparkmaster 'SPARK_MASTER=spark://192.168.0.156:7077'
+kafka: &kafka 'KAFKA_URL=192.168.0.154:9092'
+eshost: &eshost 'ES_HOST=192.168.0.154'
+esport: &esport 'ES_PORT=9200'
+duration: &duration 'SPARK_DURATION=10'
 services:
   facerpcsrv:
     image: facerpcsrv
@@ -9,7 +15,7 @@ services:
       - '/data/server/face/model:/model'
       - '/data/server/face/facerpcsrv:/logs'
     environment:
-      - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
+      - *zkserver
       - 'domainMap=storage1.sensenow.com:lovabeta.oss-cn-hongkong-internal.aliyuncs.com'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
@@ -21,30 +27,30 @@ services:
     volumes:
       - '/data/server/logs/recmdrpcsvr:/logs'
     environment:
-      - 'ZK_SERVER=192.168.0.140:2181,192.168.0.142:2181,192.168.0.143:2181'
+      - *zkserver
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
   recmdcallrate:
     image: recmdspark
-    network: bridge
+    network: host
     volumes:
       - /data/server/recmdcallrate/logs:/var/log/charles/recmd
     environment:
-      - 'SPARK_MASTER=spark://192.168.0.156:7077'
+      - *sparkmaster
       - 'MAIN_CLASS=com.jwaoo.recmd.CallRateFactor'
-      - 'KAFKA_URL=192.168.0.154:9092'
-      - 'ES_HOST=192.168.0.154'
-      - 'ES_PORT=9200'
-      - 'SPARK_DURATION=10'
+      - *kafka
+      - *eshost
+      - *esport
+      - *duration
   recmdrecharge:
     image: recmdspark
-    network: bridge
+    network: host
     volumes:
       - /data/server/recmdrecharge/logs:/var/log/charles/recmd
     environment:
-      - 'SPARK_MASTER=spark://192.168.0.156:7077'
+      - *sparkmaster
       - 'MAIN_CLASS=com.jwaoo.recmd.ChargeFactor'
-      - 'KAFKA_URL=192.168.0.154:9092'
-      - 'ES_HOST=192.168.0.154'
-      - 'ES_PORT=9200'
-      - 'SPARK_DURATION=10'
+      - *kafka
+      - *eshost
+      - *esport
+      - *duration

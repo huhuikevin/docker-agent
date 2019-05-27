@@ -5,8 +5,22 @@ services:
     ports:
       - '80:80'
     network: bridge
+    command: [/start.sh]
     volumes:
       - '/data/server/logs/serverproxy:/data/logs'
+    environment:
+      - 'server_domain=www.sweetvirtual.com'
+    extra_hosts:
+      - 'oauth_server:192.168.0.150'
+      - 'community_server:192.168.0.153'
+      - 'order_server:192.168.0.151'
+      - 'payment_server:192.168.0.151'
+      - 'route_server:192.168.0.150'
+      - 'push_server:192.168.0.151'
+      - 'activity_server:192.168.0.152'
+      - 'agent_server:192.168.0.152'
+      - 'openapi_server:192.168.0.153'
+      - 'im_server:192.168.0.152'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
   lovara:
@@ -14,8 +28,11 @@ services:
     ports:
       - '80:8098'
     network: bridge
+    command: [/start.sh]
     volumes:
       - '/data/server/logs/lovara:/data/logs'
+    environment:
+      - 'server_domain=lova.sweetvirtual.com'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
   sensenow:
@@ -26,9 +43,13 @@ services:
     command: [/start.sh]
     volumes:
       - '/data/server/logs/sensenow:/data/logs'
-    #environment:
+    environment:
+      - 'server_domain=www.sweetvirtual.com'
     #  - 'SENSE_KEY_OLD=qazplm2018082911'
     #  - 'SENSE_KEY_NEW=0x37\&ls@|Jsls\^nG'
+    extra_hosts:
+      - 'nigix_gateway:192.168.0.152'
+      - 'nigix_webapp:192.168.0.157'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
   share:
@@ -36,8 +57,11 @@ services:
     ports:
       - '80:8100'
     network: bridge
+    command: [/start.sh]
     volumes:
       - '/data/server/logs/share:/data/logs'
+    environment:
+      - 'server_domain=localhost'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
   apph5:
@@ -45,7 +69,10 @@ services:
     ports:
       - '80:8101'
     network: bridge
+    command: [/start.sh]
     volumes:
       - '/data/server/logs/apph5:/data/logs'
+    environment:
+      - 'server_domain=localhost'
     ulimits:
       - {"name": "nofile","soft": 10000, "hard": 12000}
