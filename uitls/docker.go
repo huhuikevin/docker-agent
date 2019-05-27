@@ -81,6 +81,16 @@ func FindContainerInfoByName(name string) map[string]string {
 	return client.FindContainerInfoByName(name)
 }
 
+//FindContainerInfoByLabels get the container info
+func FindContainerInfoByLabels(name, value string) map[string]string {
+	client, err := client.GetClient()
+	if err != nil {
+		log.Println("get Client error=", err)
+		return make(map[string]string)
+	}
+	return client.FindContainerInfoByLabels(name, value)
+}
+
 func shellout(command string) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer

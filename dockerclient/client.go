@@ -35,6 +35,7 @@ type ContainerConfig struct {
 	MemorySwap  int64             `json:"MemorySwap,omitempty" yaml:"MemorySwap,omitempty" toml:"MemorySwap,omitempty"`
 	Ulimits     []ULimit          `json:"Ulimits,omitempty" yaml:"Ulimits,omitempty" toml:"Ulimits,omitempty"`
 	ExtraHosts  []string          `json:"ExtraHosts,omitempty" yaml:"ExtraHosts,omitempty" toml:"ExtraHosts,omitempty"`
+	Labels      map[string]string `json:"Labels,omitempty" yaml:"Labels,omitempty" toml:"Labels,omitempty"`
 }
 
 //GetClient get an new client
@@ -153,6 +154,7 @@ func (cli *Client) StartDocker(imageName string, config *ContainerConfig, contai
 		Tty:          true,
 		AttachStdin:  true,
 		Hostname:     config.Hostname,
+		Labels:       config.Labels,
 	}
 	ulimits := make([]docker.ULimit, 0, len(config.Ulimits))
 	for _, v := range config.Ulimits {
@@ -208,6 +210,31 @@ func (cli *Client) FindContainerByName(name string) ([]docker.APIContainers, err
 		return nil, err
 	}
 	return contains, err
+}
+
+//FindContainerInfoByLabels get container by it's name
+func (cli *Client) FindContainerInfoByLabels(name, value string) map[string]string {
+	//ctx := context.Background()
+
+	filters := make(map[string][]string)
+	filters["status"] = []string{"running"}
+	filters["label"] = []string{name + "=" + value}
+
+	opt := docker.ListContainersOptions{
+		Filters: filters,
+	}
+	info := make(map[string]string)
+	contains, err := cli.client.ListContainers(opt)
+	if err != nil {
+		log.Println(err)
+		return info
+	}
+	for _, container := range contains {
+		info["Image"] = container.Image
+		info["ID"] = container.ID
+		info["Name"] = container.Names[0]
+	}
+	return info
 }
 
 //FindContainerInfoByName wrapper for FindContainerByName

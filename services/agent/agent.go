@@ -37,7 +37,7 @@ func httpAgentStatus(ctx *gin.Context) {
 func httpStatusHandler(ctx *gin.Context) {
 	server := ctx.Param("server")
 	logger.Println("GET server=", server)
-	info := uitls.FindContainerInfoByName(server)
+	info := uitls.FindContainerInfoByLabels("Name", server)
 	if _, ok := info["ID"]; ok {
 		parts := strings.Split(info["Image"], "/")
 		httpResult := newResult(common.Success)
@@ -94,6 +94,12 @@ func processStartServer(server string, params serverParams, ctx *gin.Context) er
 		if strings.Contains(val, "$HOST_IP") {
 			env[index] = strings.Replace(env[index], "$HOST_IP", myIP, -1)
 		}
+	}
+	if len(params.Config.Labels) == 0 {
+		params.Config.Labels = make(map[string]string)
+	}
+	if _, ok := params.Config.Labels["Name"]; !ok {
+		params.Config.Labels["Name"] = server
 	}
 	if _, err := uitls.StartDocker(params.Image, params.Config, params.ContainerName); err != nil {
 		httpResult := newResult(common.StartContainerError)
